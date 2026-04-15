@@ -185,8 +185,8 @@ async function handleLogin() {
     }
 
     // Login successful!
-    showAlert('success', '✅ Login successful! Redirecting to dashboard...');
-    setTimeout(() => { window.location.href = 'dashboard.html'; }, 1500);
+    showAlert('success', '✅ Login successful! Taking you to your dashboard...');
+    setTimeout(() => { window.location.href = 'user-dashboard.html'; }, 1500);
 
   } catch (err) {
     showAlert('error', '❌ An error occurred. Please try again.');

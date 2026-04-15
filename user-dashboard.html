@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Dashboard | ATU Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--red:#C8102E;--red-dark:#8B0A1E;--gold:#F5A623;--gold-light:#FFD166;--white:#FFFFFF;--off-white:#FFF8F8;--dark:#0F0F0F;--gray:#6B7280;--gray-light:#F3F4F6;--shadow:0 4px 24px rgba(0,0,0,0.08);--radius:16px;--radius-sm:8px;--transition:all 0.3s ease}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'Poppins',sans-serif;color:var(--dark);background:var(--gray-light);min-height:100vh}
+a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
+
+/* TOP BAR */
+.top-bar{background:var(--white);height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;box-shadow:0 1px 0 rgba(0,0,0,0.07);position:sticky;top:0;z-index:100}
+.top-bar-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--red);letter-spacing:2px}.top-bar-logo span{color:var(--gold)}
+.top-bar-right{display:flex;align-items:center;gap:12px}
+.btn-sm{padding:8px 16px;border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:var(--transition);border:none}
+.btn-red{background:var(--red);color:var(--white)}.btn-red:hover{background:var(--red-dark)}
+.btn-ghost{background:rgba(200,16,46,0.08);color:var(--red)}.btn-ghost:hover{background:rgba(200,16,46,0.15)}
+.hamburger-mob{display:none;flex-direction:column;gap:4px;cursor:pointer;padding:6px}
+.hamburger-mob span{display:block;width:22px;height:2px;background:var(--dark);border-radius:2px}
+
+/* LAYOUT */
+.dash-layout{display:grid;grid-template-columns:260px 1fr;min-height:calc(100vh - 66px)}
+
+/* SIDEBAR */
+.sidebar{background:var(--dark);padding:24px 0;position:sticky;top:66px;height:calc(100vh - 66px);overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-section-label{font-size:0.62rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.3);padding:16px 20px 8px}
+.sidebar-link{display:flex;align-items:center;gap:12px;padding:11px 20px;color:rgba(255,255,255,0.6);font-size:0.83rem;font-weight:500;transition:var(--transition);border-left:3px solid transparent;cursor:pointer}
+.sidebar-link:hover,.sidebar-link.active{color:var(--white);background:rgba(255,255,255,0.06);border-left-color:var(--red)}
+.sidebar-link .icon{font-size:1.1rem;width:20px;text-align:center;flex-shrink:0}
+.sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid rgba(255,255,255,0.06)}
+.sidebar-user-info{display:flex;align-items:center;gap:10px;padding:10px 4px;margin-bottom:10px}
+.user-avatar{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--gold));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:1rem;flex-shrink:0}
+.user-name-wrap strong{display:block;font-size:0.8rem;color:var(--white);font-weight:600;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-name-wrap span{font-size:0.68rem;color:rgba(255,255,255,0.4)}
+.btn-logout{width:100%;padding:9px;background:rgba(200,16,46,0.12);color:var(--red);border:1px solid rgba(200,16,46,0.2);border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:var(--transition)}
+.btn-logout:hover{background:var(--red);color:var(--white)}
+
+/* MAIN CONTENT */
+.dash-main{padding:32px;overflow-y:auto}
+.section-header{margin-bottom:28px}
+.section-header h1{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--dark);letter-spacing:1px}
+.section-header p{color:var(--gray);font-size:0.85rem;margin-top:4px}
+
+/* AUTH GATE — shown when not logged in */
+#auth-gate{display:none;min-height:60vh;align-items:center;justify-content:center;flex-direction:column;text-align:center;gap:20px;padding:40px}
+#auth-gate.show{display:flex}
+.auth-gate-icon{font-size:4rem}
+.auth-gate h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--dark);letter-spacing:1px}
+.auth-gate p{color:var(--gray);max-width:400px;line-height:1.7;font-size:0.88rem}
+.auth-gate-btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn-big{padding:13px 28px;border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.92rem;font-weight:700;cursor:pointer;transition:var(--transition);border:none;display:inline-flex;align-items:center;gap:8px}
+.btn-big.red{background:var(--red);color:var(--white)}.btn-big.red:hover{background:var(--red-dark);transform:translateY(-2px)}
+.btn-big.outline{background:transparent;color:var(--dark);border:2px solid rgba(0,0,0,0.15)}.btn-big.outline:hover{border-color:var(--red);color:var(--red)}
+
+/* DASHBOARD CONTENT — hidden until logged in */
+#dash-content{display:none}
+#dash-content.show{display:block}
+
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,var(--red-dark),var(--red));border-radius:20px;padding:28px 32px;display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:20px;flex-wrap:wrap}
+.welcome-text h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--white);letter-spacing:1px;line-height:1.1;margin-bottom:4px}
+.welcome-text h2 span{color:var(--gold)}
+.welcome-text p{color:rgba(255,255,255,0.8);font-size:0.85rem;line-height:1.6}
+.welcome-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-wh{padding:10px 18px;border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:700;cursor:pointer;transition:var(--transition);border:none}
+.btn-wh.gold{background:var(--gold);color:var(--dark)}.btn-wh.gold:hover{background:var(--gold-light)}
+.btn-wh.outline{background:rgba(255,255,255,0.1);color:var(--white);border:1px solid rgba(255,255,255,0.2)}.btn-wh.outline:hover{background:rgba(255,255,255,0.2)}
+
+/* STATS ROW */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.stat-card{background:var(--white);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow)}
+.stat-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stat-icon{width:42px;height:42px;border-radius:10px;background:rgba(200,16,46,0.08);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--dark);line-height:1;margin-bottom:4px}
+.stat-label{font-size:0.75rem;color:var(--gray);font-weight:500}
+
+/* PANELS */
+.panels-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.panel{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.panel.full{grid-column:1/-1}
+.panel-title{font-weight:700;font-size:0.95rem;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+
+/* QUICK LINKS */
+.quick-links{display:flex;flex-direction:column;gap:8px}
+.quick-link-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:var(--radius-sm);background:var(--off-white);transition:var(--transition);cursor:pointer;border:none;width:100%;font-family:'Poppins',sans-serif;text-align:left}
+.quick-link-item:hover{background:rgba(200,16,46,0.06);color:var(--red)}
+.qli-icon{width:36px;height:36px;border-radius:8px;background:rgba(200,16,46,0.08);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.qli-text strong{display:block;font-size:0.82rem;font-weight:600}
+.qli-text span{font-size:0.72rem;color:var(--gray)}
+
+/* PROFILE FORM */
+.profile-form{display:grid;gap:16px}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-label{font-size:0.78rem;font-weight:600;color:var(--dark)}
+.form-input,.form-select{padding:11px 14px;border:2px solid rgba(200,16,46,0.1);border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.85rem;color:var(--dark);background:var(--off-white);outline:none;transition:var(--transition)}
+.form-input:focus,.form-select:focus{border-color:var(--red);background:var(--white)}
+.form-row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn-save{padding:11px 24px;background:var(--red);color:var(--white);border:none;border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.88rem;font-weight:700;cursor:pointer;transition:var(--transition)}
+.btn-save:hover{background:var(--red-dark);transform:translateY(-1px)}
+
+/* RECENT DOWNLOADS */
+.download-list{display:flex;flex-direction:column;gap:8px}
+.download-item{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid rgba(0,0,0,0.05);border-radius:var(--radius-sm);transition:var(--transition)}
+.download-item:hover{border-color:rgba(200,16,46,0.2);background:rgba(200,16,46,0.02)}
+.dl-icon{width:36px;height:36px;border-radius:8px;background:rgba(200,16,46,0.08);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.dl-info{flex:1;min-width:0}
+.dl-title{font-weight:600;font-size:0.82rem;color:var(--dark);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dl-meta{font-size:0.7rem;color:var(--gray);margin-top:2px}
+.empty-state{text-align:center;padding:32px 20px;color:var(--gray)}
+.empty-state .e-icon{font-size:2.5rem;margin-bottom:10px}
+.empty-state p{font-size:0.82rem;line-height:1.6}
+
+/* CAMPAIGN CARD */
+.campaign-card{background:linear-gradient(135deg,var(--dark),#2d0a0a);border-radius:var(--radius);padding:24px;color:var(--white)}
+.campaign-card h3{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:1px;margin-bottom:8px}
+.campaign-card h3 span{color:var(--gold)}
+.campaign-card p{color:rgba(255,255,255,0.7);font-size:0.82rem;line-height:1.7;margin-bottom:16px}
+.campaign-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.campaign-tag{background:rgba(245,166,35,0.15);color:var(--gold);padding:3px 10px;border-radius:12px;font-size:0.7rem;font-weight:600}
+.btn-campaign{background:var(--gold);color:var(--dark);padding:10px 20px;border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:var(--transition);text-decoration:none;display:inline-block}
+.btn-campaign:hover{background:var(--gold-light);transform:translateY(-1px)}
+
+/* ALERT */
+.alert{padding:10px 16px;border-radius:var(--radius-sm);font-size:0.82rem;font-weight:500;display:none;margin-top:8px}
+.alert.success{background:rgba(34,197,94,0.08);color:#166534;border:1px solid rgba(34,197,94,0.2)}
+.alert.error{background:rgba(200,16,46,0.08);color:var(--red);border:1px solid rgba(200,16,46,0.2)}
+.alert.visible{display:block}
+
+@media(max-width:900px){
+  .dash-layout{grid-template-columns:1fr}
+  .sidebar{display:none;position:fixed;top:66px;left:0;width:260px;height:calc(100vh - 66px);z-index:200}
+  .sidebar.mob-open{display:flex}
+  .hamburger-mob{display:flex}
+  .stats-row{grid-template-columns:1fr 1fr}
+  .panels-grid{grid-template-columns:1fr}
+  .panel.full{grid-column:auto}
+}
+@media(max-width:480px){
+  .dash-main{padding:20px 16px}
+  .stats-row{grid-template-columns:1fr}
+  .welcome-banner{padding:20px}
+  .form-row-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="top-bar">
+  <a href="index.html" class="top-bar-logo">ATU <span>Study Hub</span></a>
+  <div class="top-bar-right">
+    <a href="past-questions.html"><button class="btn-sm btn-ghost">📚 Past Questions</button></a>
+    <button class="btn-sm btn-red" onclick="handleLogout()">← Sign Out</button>
+    <div class="hamburger-mob" onclick="toggleSidebar()"><span></span><span></span><span></span></div>
+  </div>
+</header>
+
+<div class="dash-layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div style="padding:0 0 8px">
+      <div class="sidebar-section-label">Navigation</div>
+      <div class="sidebar-link active" onclick="showPanel('overview')"><span class="icon">📊</span> Overview</div>
+      <div class="sidebar-link" onclick="showPanel('questions')"><span class="icon">📚</span> Browse Past Questions</div>
+      <div class="sidebar-link" onclick="showPanel('profile')"><span class="icon">👤</span> My Profile</div>
+      <div class="sidebar-link" onclick="showPanel('campaign')"><span class="icon">🗳️</span> Campaign</div>
+      <div class="sidebar-section-label">Links</div>
+      <a href="index.html" class="sidebar-link"><span class="icon">🏠</span> Homepage</a>
+      <a href="help.html" class="sidebar-link"><span class="icon">🆘</span> Help Center</a>
+      <a href="contact.html" class="sidebar-link"><span class="icon">📞</span> Contact</a>
+    </div>
+    <div class="sidebar-bottom">
+      <div class="sidebar-user-info">
+        <div class="user-avatar" id="sidebarAvatar">?</div>
+        <div class="user-name-wrap">
+          <strong id="sidebarName">Loading...</strong>
+          <span id="sidebarEmail">—</span>
+        </div>
+      </div>
+      <button class="btn-logout" onclick="handleLogout()">← Sign Out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="dash-main">
+
+    <!-- NOT LOGGED IN STATE -->
+    <div id="auth-gate">
+      <div class="auth-gate-icon">🔒</div>
+      <h2 class="auth-gate">You're Not Logged In</h2>
+      <p>You need a free ATU Study Hub account to access your personal dashboard and download past questions.</p>
+      <div class="auth-gate-btns">
+        <button class="btn-big red" onclick="window.location.href='login.html'">🔑 Sign In</button>
+        <button class="btn-big outline" onclick="window.location.href='signup.html'">🎓 Create Free Account</button>
+      </div>
+    </div>
+
+    <!-- LOGGED IN CONTENT -->
+    <div id="dash-content">
+
+      <!-- OVERVIEW PANEL -->
+      <div id="panel-overview" class="panel-view">
+        <div class="section-header">
+          <h1>My <span style="color:var(--red)">Dashboard</span></h1>
+          <p id="welcomeSubtitle">Welcome back! Here's your ATU Study Hub overview.</p>
+        </div>
+
+        <!-- Welcome banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2>Welcome back, <span id="welcomeName">Student</span>!</h2>
+            <p>You have full access to all past questions. Good luck with your studies! 📚</p>
+          </div>
+          <div class="welcome-actions">
+            <button class="btn-wh gold" onclick="window.location.href='past-questions.html'">📚 Browse Past Questions</button>
+            <a href="https://wa.me/233536801965?text=Hi+Bafiku!" target="_blank"><button class="btn-wh outline">💬 Contact Bafiku</button></a>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-card-top"><div class="stat-icon">📄</div></div>
+            <div class="stat-num" id="statTotal">500+</div>
+            <div class="stat-label">Total Past Questions Available</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-top"><div class="stat-icon">🏛️</div></div>
+            <div class="stat-num">6</div>
+            <div class="stat-label">Faculties Covered</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-top"><div class="stat-icon">📲</div></div>
+            <div class="stat-num">Free</div>
+            <div class="stat-label">Always Free to Download</div>
+          </div>
+        </div>
+
+        <!-- Panels -->
+        <div class="panels-grid">
+          <!-- Quick Actions -->
+          <div class="panel">
+            <div class="panel-title">⚡ Quick Actions</div>
+            <div class="quick-links">
+              <button class="quick-link-item" onclick="window.location.href='past-questions.html'">
+                <div class="qli-icon">📚</div>
+                <div class="qli-text"><strong>Browse All Past Questions</strong><span>Search, filter, and download</span></div>
+              </button>
+              <button class="quick-link-item" onclick="window.location.href='past-questions.html?tab=recent'">
+                <div class="qli-icon">🆕</div>
+                <div class="qli-text"><strong>Recently Added</strong><span>New uploads from the last 7 days</span></div>
+              </button>
+              <button class="quick-link-item" onclick="window.open('https://wa.me/233536801965?text=Hi+Bafiku%2C+I+need+past+questions+for%3A+','_blank')">
+                <div class="qli-icon">📲</div>
+                <div class="qli-text"><strong>Request a Past Question</strong><span>Send request via WhatsApp</span></div>
+              </button>
+              <button class="quick-link-item" onclick="showPanel('profile')">
+                <div class="qli-icon">👤</div>
+                <div class="qli-text"><strong>Edit My Profile</strong><span>Update your name, faculty, level</span></div>
+              </button>
+            </div>
+          </div>
+          <!-- Campaign card -->
+          <div class="panel" style="background:none;padding:0;box-shadow:none">
+            <div class="campaign-card">
+              <h3>Vote <span>Bafiku</span> 2026</h3>
+              <p>This platform is Bafiku's promise in action — free academic resources for every ATU student. Now support him in the SRC Presidential race!</p>
+              <div class="campaign-tags">
+                <span class="campaign-tag">#Empowering Students</span>
+                <span class="campaign-tag">#Amplifying Voices</span>
+                <span class="campaign-tag">#Sankofa</span>
+                <span class="campaign-tag">#Bring Bafiku Back</span>
+              </div>
+              <a href="https://wa.me/233536801965?text=I+support+Bafiku+for+SRC+President+2026!" target="_blank" class="btn-campaign">🗳️ Join the Campaign</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- QUESTIONS PANEL -->
+      <div id="panel-questions" class="panel-view" style="display:none">
+        <div class="section-header">
+          <h1>Past <span style="color:var(--red)">Questions</span></h1>
+          <p>You have full access. Click below to browse and download.</p>
+        </div>
+        <div class="panel" style="text-align:center;padding:48px">
+          <div style="font-size:3rem;margin-bottom:16px">📚</div>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:8px">Browse All Past Questions</h3>
+          <p style="color:var(--gray);font-size:0.85rem;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto">Search by course name, filter by faculty, level and year. Downloads are instant.</p>
+          <button class="btn-save" onclick="window.location.href='past-questions.html'">📚 Go to Past Questions →</button>
+        </div>
+      </div>
+
+      <!-- PROFILE PANEL -->
+      <div id="panel-profile" class="panel-view" style="display:none">
+        <div class="section-header">
+          <h1>My <span style="color:var(--red)">Profile</span></h1>
+          <p>View and update your account information.</p>
+        </div>
+        <div class="panel">
+          <div class="panel-title">👤 Account Details</div>
+          <div class="profile-form">
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" class="form-input" id="profileName" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-input" id="profileEmail" placeholder="your@email.com" readonly style="opacity:0.6;cursor:not-allowed">
+              </div>
+            </div>
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-input" id="profilePhone" placeholder="e.g. 024 XXX XXXX">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Faculty</label>
+                <select class="form-select" id="profileFaculty">
+                  <option value="">Select Faculty</option>
+                  <option>Engineering</option>
+                  <option>Business & Management</option>
+                  <option>Computing & IT</option>
+                  <option>Health Sciences</option>
+                  <option>Art & Design</option>
+                  <option>Applied Sciences</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group" style="max-width:250px">
+              <label class="form-label">Level</label>
+              <select class="form-select" id="profileLevel">
+                <option value="">Select Level</option>
+                <option>Level 100</option><option>Level 200</option><option>Level 300</option>
+                <option>HND 1</option><option>HND 2</option>
+              </select>
+            </div>
+            <div>
+              <button class="btn-save" onclick="saveProfile()">💾 Save Changes</button>
+              <div class="alert success" id="profileSuccess">✅ Profile updated successfully!</div>
+              <div class="alert error" id="profileError"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Change Password -->
+        <div class="panel" style="margin-top:20px">
+          <div class="panel-title">🔒 Change Password</div>
+          <div class="profile-form">
+            <div class="form-group">
+              <label class="form-label">New Password</label>
+              <input type="password" class="form-input" id="newPassword" placeholder="Enter new password (min 8 characters)">
+            </div>
+            <button class="btn-save" onclick="changePassword()">🔑 Update Password</button>
+            <div class="alert success" id="pwdSuccess">✅ Password updated! You may need to log in again.</div>
+            <div class="alert error" id="pwdError"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CAMPAIGN PANEL -->
+      <div id="panel-campaign" class="panel-view" style="display:none">
+        <div class="section-header">
+          <h1>Campaign <span style="color:var(--red)">Support</span></h1>
+          <p>Join thousands of students supporting Bafiku for ATU-SRC President 2026.</p>
+        </div>
+        <div class="panels-grid">
+          <div class="campaign-card panel" style="background:linear-gradient(135deg,var(--dark),#2d0a0a)">
+            <h3 style="font-size:2rem">Vote <span>Bafiku</span> 2026</h3>
+            <p style="color:rgba(255,255,255,0.75);margin-bottom:20px">This Study Hub platform is proof of what Bafiku delivers — real action before getting elected. With your support, imagine what he'll do with the full mandate of SRC President.</p>
+            <div class="campaign-tags">
+              <span class="campaign-tag">#Empowering Students</span>
+              <span class="campaign-tag">#Amplifying Voices</span>
+              <span class="campaign-tag">#Sankofa</span>
+              <span class="campaign-tag">#Bring Bafiku Back</span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px">
+              <a href="https://wa.me/233536801965?text=I+support+Bafiku+2026!" target="_blank" class="btn-campaign">💬 WhatsApp Support</a>
+              <a href="https://www.instagram.com/mr.bafiku" target="_blank" class="btn-campaign" style="background:rgba(255,255,255,0.1);color:var(--white)">📸 Follow on Instagram</a>
+              <a href="https://www.tiktok.com/@mr.bafiku1" target="_blank" class="btn-campaign" style="background:rgba(255,255,255,0.1);color:var(--white)">🎵 Follow on TikTok</a>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-title">📞 Contact Bafiku Directly</div>
+            <div class="quick-links">
+              <a href="https://wa.me/233536801965" target="_blank" class="quick-link-item">
+                <div class="qli-icon">💬</div>
+                <div class="qli-text"><strong>WhatsApp</strong><span>053 680 1965</span></div>
+              </a>
+              <a href="https://wa.me/233544823484" target="_blank" class="quick-link-item">
+                <div class="qli-icon">💬</div>
+                <div class="qli-text"><strong>WhatsApp (Alt)</strong><span>054 482 3484</span></div>
+              </a>
+              <a href="https://www.instagram.com/mr.bafiku" target="_blank" class="quick-link-item">
+                <div class="qli-icon">📸</div>
+                <div class="qli-text"><strong>Instagram</strong><span>@mr.bafiku</span></div>
+              </a>
+              <a href="https://www.tiktok.com/@mr.bafiku1" target="_blank" class="quick-link-item">
+                <div class="qli-icon">🎵</div>
+                <div class="qli-text"><strong>TikTok</strong><span>@mr.bafiku1</span></div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end #dash-content -->
+  </main>
+</div>
+
+<script>
+// ============================================================
+//  SUPABASE CONFIG — same as all other pages
+// ============================================================
+const SUPABASE_URL      = 'https://psrbdvhszemudyckkbag.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBzcmJkdmhzemVtdWR5Y2trYmFnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2NDk4NzMsImV4cCI6MjA5MjIyNTg3M30.xG0L9n-ZO5goMU0uHf3R41jj_pYFr74cZ41zQHyYuhg';
+
+let sb = null;
+try {
+  if (SUPABASE_URL !== 'YOUR_SUPABASE_URL') {
+    sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  }
+} catch(e) {}
+
+// ============================================================
+//  INIT
+// ============================================================
+window.addEventListener('DOMContentLoaded', async function() {
+  if (!sb) {
+    // Demo mode — show basic content
+    showDashboard({ email: 'demo@atu.edu.gh', user_metadata: { full_name: 'Demo Student' } });
+    return;
+  }
+  const { data: { user } } = await sb.auth.getUser();
+  if (user) {
+    showDashboard(user);
+    loadProfile(user);
+  } else {
+    // Not logged in — show auth gate
+    document.getElementById('auth-gate').classList.add('show');
+  }
+});
+
+function showDashboard(user) {
+  const name = user.user_metadata?.full_name || user.email?.split('@')[0] || 'Student';
+  const initial = name.charAt(0).toUpperCase();
+
+  document.getElementById('auth-gate').style.display = 'none';
+  document.getElementById('dash-content').classList.add('show');
+  document.getElementById('welcomeName').textContent = name.split(' ')[0];
+  document.getElementById('sidebarName').textContent = name;
+  document.getElementById('sidebarEmail').textContent = user.email || '';
+  document.getElementById('sidebarAvatar').textContent = initial;
+  document.getElementById('profileEmail').value = user.email || '';
+  document.getElementById('profileName').value = name;
+}
+
+async function loadProfile(user) {
+  if (!sb) return;
+  try {
+    const { data } = await sb.from('users').select('*').eq('id', user.id).single();
+    if (data) {
+      if (data.name) document.getElementById('profileName').value = data.name;
+      if (data.phone) document.getElementById('profilePhone').value = data.phone;
+      if (data.faculty) document.getElementById('profileFaculty').value = data.faculty;
+      if (data.level) document.getElementById('profileLevel').value = data.level;
+    }
+  } catch(e) {}
+}
+
+// ============================================================
+//  PANEL SWITCHING
+// ============================================================
+function showPanel(panel) {
+  document.querySelectorAll('.panel-view').forEach(p => p.style.display = 'none');
+  document.getElementById('panel-' + panel).style.display = 'block';
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('mob-open');
+}
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('mob-open');
+}
+
+// ============================================================
+//  SAVE PROFILE
+// ============================================================
+async function saveProfile() {
+  if (!sb) { showAlert('profileSuccess', 'success'); return; }
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+
+  const name    = document.getElementById('profileName').value.trim();
+  const phone   = document.getElementById('profilePhone').value.trim();
+  const faculty = document.getElementById('profileFaculty').value;
+  const level   = document.getElementById('profileLevel').value;
+
+  try {
+    // Update user metadata
+    await sb.auth.updateUser({ data: { full_name: name } });
+    // Update users table
+    const { error } = await sb.from('users').upsert({
+      id: user.id, email: user.email, name, phone, faculty, level
+    });
+    if (error) throw error;
+    showAlert('profileSuccess', 'success');
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('welcomeName').textContent = name.split(' ')[0];
+  } catch(e) {
+    const el = document.getElementById('profileError');
+    el.textContent = '❌ ' + e.message;
+    el.classList.add('visible');
+  }
+}
+
+// ============================================================
+//  CHANGE PASSWORD
+// ============================================================
+async function changePassword() {
+  if (!sb) { showAlert('pwdSuccess', 'success'); return; }
+  const pwd = document.getElementById('newPassword').value;
+  const errEl = document.getElementById('pwdError');
+  if (pwd.length < 8) {
+    errEl.textContent = '⚠️ Password must be at least 8 characters.';
+    errEl.classList.add('visible');
+    return;
+  }
+  try {
+    const { error } = await sb.auth.updateUser({ password: pwd });
+    if (error) throw error;
+    showAlert('pwdSuccess', 'success');
+    document.getElementById('newPassword').value = '';
+  } catch(e) {
+    errEl.textContent = '❌ ' + e.message;
+    errEl.classList.add('visible');
+  }
+}
+
+// ============================================================
+//  LOGOUT
+// ============================================================
+async function handleLogout() {
+  if (sb) await sb.auth.signOut();
+  window.location.href = 'index.html';
+}
+
+// Alert helper
+function showAlert(id, type) {
+  const el = document.getElementById(id);
+  el.classList.add('visible');
+  setTimeout(() => el.classList.remove('visible'), 4000);
+}
+</script>
+</body>
+</html>

@@ -3,348 +3,357 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ATU Study Hub — Complete Setup Guide</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>ATU Study Hub — Setup Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --red:#C8102E;--red-dark:#8B0A1E;--gold:#F5A623;--gold-light:#FFD166;
-  --white:#FFFFFF;--dark:#0F0F0F;--gray:#6B7280;--light:#F9FAFB;
-  --green:#16a34a;--green-light:#dcfce7;--blue:#2563eb;--blue-light:#dbeafe;
-  --orange:#ea580c;--orange-light:#ffedd5;--purple:#7c3aed;--purple-light:#ede9fe;
-  --radius:16px;--radius-sm:8px;--shadow:0 4px 24px rgba(0,0,0,0.08);
-  --transition:all 0.3s ease
+  --white:#FFFFFF;--dark:#0F0F0F;--gray:#6B7280;--light:#F8F9FA;--dark2:#1C1C1E;
+  --green:#16a34a;--green-bg:#f0fdf4;--blue:#2563eb;--blue-bg:#eff6ff;
+  --orange:#ea580c;--orange-bg:#fff7ed;--purple:#7c3aed;
+  --radius:14px;--radius-sm:8px;--shadow:0 4px 20px rgba(0,0,0,0.08);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:'Poppins',sans-serif;background:var(--light);color:var(--dark);line-height:1.6}
-a{color:var(--red);text-decoration:none}a:hover{text-decoration:underline}
-/* NAV */
-.guide-nav{position:fixed;top:0;left:0;right:0;background:rgba(15,15,15,0.97);backdrop-filter:blur(12px);z-index:100;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.guide-nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--white);letter-spacing:2px}.guide-nav-logo span{color:var(--gold)}
-.guide-nav-links{display:flex;gap:4px}
-.nav-pill{padding:5px 12px;border-radius:20px;font-size:0.72rem;font-weight:600;color:rgba(255,255,255,0.6);cursor:pointer;transition:var(--transition);text-decoration:none}
-.nav-pill:hover{background:rgba(255,255,255,0.1);color:var(--white);text-decoration:none}
+a{color:var(--red)}a:hover{text-decoration:underline}
+code{background:rgba(0,0,0,0.07);padding:1px 7px;border-radius:5px;font-family:'Courier New',monospace;font-size:0.82em;color:#be185d}
+
+/* TOP NAV */
+.top-nav{position:fixed;top:0;left:0;right:0;background:rgba(15,15,15,0.96);backdrop-filter:blur(12px);z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--white);letter-spacing:2px}.nav-logo span{color:var(--gold)}
+.nav-steps{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}.nav-steps::-webkit-scrollbar{display:none}
+.nav-step-pill{padding:5px 12px;border-radius:20px;font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;transition:0.2s;white-space:nowrap;text-decoration:none;border:none;background:transparent}
+.nav-step-pill:hover,.nav-step-pill.done{color:var(--white);background:rgba(255,255,255,0.1)}
+.nav-step-pill.current{background:var(--red);color:var(--white)}
+
 /* HERO */
-.guide-hero{background:linear-gradient(135deg,var(--red-dark),var(--red) 50%,#a0001e);padding:100px 32px 60px;text-align:center;position:relative;overflow:hidden}
-.guide-hero::before{content:'';position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
-.guide-hero-inner{max-width:700px;margin:0 auto;position:relative;z-index:2}
-.guide-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:var(--white);letter-spacing:3px;line-height:1;margin-bottom:12px}.guide-hero h1 span{color:var(--gold)}
-.guide-hero p{color:rgba(255,255,255,0.8);font-size:1rem;line-height:1.7;max-width:560px;margin:0 auto 28px}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);color:var(--white);padding:8px 20px;border-radius:30px;font-size:0.82rem;font-weight:600;margin-bottom:24px}
-.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--gold);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-/* LAYOUT */
-.guide-body{max-width:900px;margin:0 auto;padding:60px 24px 80px}
-/* STEP */
-.step-section{margin-bottom:60px;scroll-margin-top:80px}
-.step-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:28px}
-.step-number{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--white);flex-shrink:0;box-shadow:0 4px 16px rgba(200,16,46,0.3)}
-.step-title-wrap h2{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--dark);letter-spacing:1px;line-height:1.1}
-.step-title-wrap p{color:var(--gray);font-size:0.88rem;margin-top:4px}
+.hero{background:linear-gradient(135deg,var(--red-dark),var(--red) 55%,#b0001e);padding:96px 24px 60px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.hero-inner{max-width:680px;margin:0 auto;position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(245,166,35,0.15);border:1px solid rgba(245,166,35,0.3);color:var(--gold);padding:6px 18px;border-radius:30px;font-size:0.78rem;font-weight:600;margin-bottom:20px;letter-spacing:0.5px}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:var(--white);letter-spacing:3px;line-height:1;margin-bottom:16px}.hero h1 span{color:var(--gold)}
+.hero p{color:rgba(255,255,255,0.78);font-size:0.95rem;line-height:1.75;max-width:540px;margin:0 auto 32px}
+.hero-badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.h-badge{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:20px;font-size:0.78rem;font-weight:500;border:1px solid rgba(255,255,255,0.15)}
+.h-badge.green{background:rgba(34,197,94,0.15);color:#86efac;border-color:rgba(34,197,94,0.2)}
+.h-badge.gold{background:rgba(245,166,35,0.15);color:var(--gold);border-color:rgba(245,166,35,0.25)}
+
+/* CONTENT */
+.page-body{max-width:860px;margin:0 auto;padding:56px 24px 80px}
+
+/* HOW IT WORKS — flow diagram */
+.flow-section{margin-bottom:56px}
+.flow-title{font-family:'Bebas Neue',sans-serif;font-size:2.2rem;color:var(--dark);letter-spacing:1px;margin-bottom:8px}
+.flow-title span{color:var(--red)}
+.flow-subtitle{color:var(--gray);font-size:0.88rem;margin-bottom:32px}
+.flow-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.flow-card{background:var(--white);border-radius:var(--radius);padding:24px 20px;text-align:center;box-shadow:var(--shadow);border-top:4px solid transparent;transition:0.2s;position:relative}
+.flow-card:hover{transform:translateY(-3px)}
+.flow-card.red{border-top-color:var(--red)}.flow-card.gold{border-top-color:var(--gold)}.flow-card.green{border-top-color:var(--green)}
+.flow-num{position:absolute;top:-14px;left:50%;transform:translateX(-50%);width:28px;height:28px;border-radius:50%;background:var(--red);color:var(--white);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center}
+.flow-card.gold .flow-num{background:var(--gold);color:var(--dark)}.flow-card.green .flow-num{background:var(--green)}
+.flow-icon{font-size:2.2rem;margin-bottom:12px}
+.flow-card h4{font-weight:700;font-size:0.9rem;color:var(--dark);margin-bottom:6px}
+.flow-card p{font-size:0.78rem;color:var(--gray);line-height:1.6}
+
+/* STEP SECTIONS */
+.step-section{margin-bottom:48px;scroll-margin-top:72px}
+.step-header{display:flex;align-items:flex-start;gap:18px;margin-bottom:24px}
+.step-circle{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red-dark));display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:1.4rem;color:var(--white);flex-shrink:0;box-shadow:0 4px 16px rgba(200,16,46,0.3)}
+.step-head-text h2{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;color:var(--dark);letter-spacing:1px;line-height:1.1}
+.step-head-text p{color:var(--gray);font-size:0.82rem;margin-top:3px}
+
 /* CARDS */
-.card{background:var(--white);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow);margin-bottom:20px;border:1px solid rgba(0,0,0,0.05)}
-.card-title{font-weight:700;font-size:1rem;color:var(--dark);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.card{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:16px}
+.card-title{font-weight:700;font-size:0.92rem;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+
+/* CALLOUTS */
+.callout{display:flex;gap:14px;padding:14px 18px;border-radius:var(--radius-sm);margin:14px 0}
+.callout.warn{background:var(--orange-bg);border-left:4px solid var(--orange)}
+.callout.info{background:var(--blue-bg);border-left:4px solid var(--blue)}
+.callout.success{background:var(--green-bg);border-left:4px solid var(--green)}
+.callout.danger{background:#fef2f2;border-left:4px solid var(--red)}
+.callout-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px}
+.callout-body{font-size:0.82rem;line-height:1.65;color:var(--dark)}
+.callout-body strong{display:block;margin-bottom:3px;font-size:0.83rem}
+
 /* STEPS LIST */
-.steps-list{list-style:none;display:flex;flex-direction:column;gap:16px}
-.steps-list li{display:flex;gap:14px;align-items:flex-start}
-.step-num-sm{width:28px;height:28px;border-radius:50%;background:rgba(200,16,46,0.1);color:var(--red);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-text{font-size:0.88rem;color:var(--dark);line-height:1.6}
-.step-text strong{color:var(--red)}
-.step-text .note{display:block;font-size:0.78rem;color:var(--gray);margin-top:4px}
+.steps-ol{list-style:none;display:flex;flex-direction:column;gap:14px}
+.steps-ol li{display:flex;gap:12px;align-items:flex-start}
+.s-num{width:26px;height:26px;border-radius:50%;background:rgba(200,16,46,0.1);color:var(--red);font-size:0.72rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.s-text{font-size:0.85rem;line-height:1.65}
+.s-text strong{color:var(--red)}
+.s-sub{display:block;font-size:0.76rem;color:var(--gray);margin-top:3px;background:rgba(0,0,0,0.04);padding:6px 10px;border-radius:6px;line-height:1.6}
+
 /* CODE BLOCKS */
-.code-block{background:#1a1a2e;border-radius:var(--radius-sm);padding:20px 24px;margin:16px 0;position:relative;overflow-x:auto}
-.code-block code{color:#a6e22e;font-family:'Courier New',monospace;font-size:0.88rem;line-height:1.7;white-space:pre}
-.code-block .comment{color:#75715e}
-.code-block .string{color:#e6db74}
-.code-block .keyword{color:#66d9ef}
-.code-label{font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:8px}
-.copy-btn{position:absolute;top:12px;right:12px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:4px 10px;font-size:0.72rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:var(--transition)}
+.code-wrap{background:#1a1a2e;border-radius:var(--radius-sm);padding:18px 20px;margin:12px 0;position:relative;overflow-x:auto}
+.code-wrap code{color:#a6e22e;font-family:'Courier New',monospace;font-size:0.83rem;line-height:1.8;white-space:pre;display:block}
+.code-wrap .cm{color:#75715e}.code-wrap .cs{color:#e6db74}.code-wrap .ck{color:#66d9ef}
+.code-label{font-size:0.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gray);margin-bottom:6px}
+.copy-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.12);border-radius:6px;padding:4px 10px;font-size:0.7rem;cursor:pointer;font-family:'Poppins',sans-serif;transition:0.2s}
 .copy-btn:hover{background:rgba(255,255,255,0.15);color:var(--white)}
 .copy-btn.copied{background:rgba(34,197,94,0.15);color:#4ade80;border-color:rgba(34,197,94,0.2)}
-/* CALLOUTS */
-.callout{display:flex;gap:14px;padding:16px 20px;border-radius:var(--radius-sm);margin:16px 0;align-items:flex-start}
-.callout.warning{background:rgba(234,88,12,0.08);border-left:4px solid var(--orange)}
-.callout.info{background:var(--blue-light);border-left:4px solid var(--blue)}
-.callout.success{background:var(--green-light);border-left:4px solid var(--green)}
-.callout.danger{background:rgba(200,16,46,0.06);border-left:4px solid var(--red)}
-.callout-icon{font-size:1.3rem;flex-shrink:0;margin-top:1px}
-.callout-text{font-size:0.84rem;line-height:1.6;color:var(--dark)}
-.callout-text strong{display:block;font-weight:700;margin-bottom:3px}
-/* TABLES */
-.guide-table{width:100%;border-collapse:collapse;margin:16px 0;font-size:0.85rem}
-.guide-table th{background:rgba(200,16,46,0.08);color:var(--red);font-weight:700;padding:10px 14px;text-align:left;border-bottom:2px solid rgba(200,16,46,0.15)}
-.guide-table td{padding:10px 14px;border-bottom:1px solid rgba(0,0,0,0.05);vertical-align:top}
+
+/* TABLE */
+.guide-table{width:100%;border-collapse:collapse;font-size:0.82rem;margin:12px 0}
+.guide-table th{background:rgba(200,16,46,0.06);color:var(--red);font-weight:700;padding:9px 12px;text-align:left;border-bottom:2px solid rgba(200,16,46,0.12)}
+.guide-table td{padding:9px 12px;border-bottom:1px solid rgba(0,0,0,0.05);vertical-align:top}
 .guide-table tr:last-child td{border-bottom:none}
-.guide-table code{background:rgba(0,0,0,0.05);padding:1px 6px;border-radius:4px;font-size:0.8rem;font-family:'Courier New',monospace}
-/* BADGES */
-.badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
-.badge.required{background:rgba(200,16,46,0.1);color:var(--red)}
-.badge.optional{background:rgba(107,114,128,0.1);color:var(--gray)}
-.badge.free{background:var(--green-light);color:var(--green)}
-/* CHECKLIST */
-.checklist{display:flex;flex-direction:column;gap:10px}
-.check-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:var(--light);border-radius:var(--radius-sm);cursor:pointer;transition:var(--transition);border:2px solid transparent}
-.check-item:hover{border-color:rgba(200,16,46,0.2)}
-.check-item.done{background:var(--green-light);border-color:rgba(34,197,94,0.3)}
-.check-box{width:22px;height:22px;border-radius:6px;border:2px solid rgba(200,16,46,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:var(--transition);margin-top:1px}
-.check-item.done .check-box{background:var(--green);border-color:var(--green);color:var(--white)}
-.check-label{font-size:0.85rem;font-weight:500;color:var(--dark)}
-.check-item.done .check-label{color:var(--green);text-decoration:line-through;text-decoration-color:rgba(22,163,74,0.4)}
-/* FILE STRUCTURE */
-.file-tree{background:#1a1a2e;border-radius:var(--radius-sm);padding:20px 24px;font-family:'Courier New',monospace;font-size:0.85rem;line-height:1.9}
-.file-tree .folder{color:#66d9ef}
-.file-tree .file{color:#a6e22e}
-.file-tree .comment{color:#75715e}
-.file-tree .highlight{color:var(--gold)}
-/* GRID */
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.guide-table code{font-size:0.78rem}
+.badge-req{display:inline-block;background:rgba(200,16,46,0.1);color:var(--red);font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:8px;text-transform:uppercase;letter-spacing:0.5px}
+.badge-opt{display:inline-block;background:rgba(107,114,128,0.1);color:var(--gray);font-size:0.65rem;font-weight:700;padding:1px 7px;border-radius:8px;text-transform:uppercase;letter-spacing:0.5px}
+
 /* DIVIDER */
-.section-divider{height:1px;background:linear-gradient(90deg,transparent,rgba(200,16,46,0.2),transparent);margin:40px 0}
-/* PROGRESS TRACKER */
-.progress-tracker{position:fixed;right:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:99}
-.progress-dot{width:10px;height:10px;border-radius:50%;background:rgba(200,16,46,0.2);cursor:pointer;transition:var(--transition);position:relative}
-.progress-dot:hover,.progress-dot.active{background:var(--red);transform:scale(1.3)}
-.progress-dot::after{content:attr(data-label);position:absolute;right:18px;top:50%;transform:translateY(-50%);white-space:nowrap;font-size:0.7rem;font-weight:600;color:var(--dark);background:var(--white);padding:2px 8px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);opacity:0;pointer-events:none;transition:var(--transition)}
-.progress-dot:hover::after{opacity:1}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(200,16,46,0.15),transparent);margin:36px 0}
+
+/* CHECKLIST */
+.checklist{display:flex;flex-direction:column;gap:8px}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;background:var(--light);border-radius:var(--radius-sm);cursor:pointer;border:2px solid transparent;transition:0.2s}
+.check-item:hover{border-color:rgba(200,16,46,0.15)}
+.check-item.done{background:var(--green-bg);border-color:rgba(34,197,94,0.25)}
+.check-box{width:20px;height:20px;border-radius:5px;border:2px solid rgba(200,16,46,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:0.2s;font-size:0.7rem;margin-top:1px}
+.check-item.done .check-box{background:var(--green);border-color:var(--green);color:var(--white)}
+.check-label{font-size:0.84rem;font-weight:500;line-height:1.5}
+.check-item.done .check-label{color:var(--green)}
+.check-group-title{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:var(--dark);letter-spacing:1px;margin:20px 0 10px}
+
+/* DASHBOARD EXPLAINER */
+.dash-explainer{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:12px}
+.dash-box{background:var(--white);border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);border-top:4px solid var(--red)}
+.dash-box.user-box{border-top-color:var(--gold)}
+.dash-box h4{font-weight:700;font-size:0.9rem;color:var(--dark);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.dash-box ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.dash-box ul li{display:flex;align-items:flex-start;gap:8px;font-size:0.78rem;color:var(--gray);line-height:1.5}
+.dash-box ul li::before{content:'→';color:var(--red);font-weight:700;flex-shrink:0}
+.dash-box.user-box ul li::before{color:var(--gold)}
+
+/* FLOW ARROWS */
+.flow-arrow{text-align:center;font-size:1.5rem;color:rgba(200,16,46,0.3);margin:4px 0}
+
+/* PDF TIP */
+.pdf-tips{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-top:12px}
+.pdf-tip{background:var(--white);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);text-align:center}
+.pdf-tip .pt-icon{font-size:2rem;margin-bottom:10px}
+.pdf-tip h4{font-weight:700;font-size:0.82rem;margin-bottom:6px}
+.pdf-tip p{font-size:0.75rem;color:var(--gray);line-height:1.5}
+.pdf-tip a{color:var(--red);font-weight:600}
+
+/* COMPLETION BANNER */
+#done-banner{display:none;background:linear-gradient(135deg,var(--green),#15803d);border-radius:20px;padding:36px;text-align:center;margin-top:32px}
+#done-banner h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--white);letter-spacing:2px;margin-bottom:8px}
+#done-banner p{color:rgba(255,255,255,0.85);font-size:0.9rem;line-height:1.7}
+.btn-done{display:inline-flex;align-items:center;gap:8px;background:var(--white);color:var(--green);padding:12px 24px;border-radius:var(--radius-sm);font-weight:700;font-size:0.9rem;margin-top:20px;text-decoration:none;transition:0.2s}.btn-done:hover{transform:translateY(-2px);text-decoration:none}
+
 /* FOOTER */
-.guide-footer{background:var(--dark);padding:40px 24px;text-align:center}
-.guide-footer p{color:rgba(255,255,255,0.5);font-size:0.82rem;line-height:1.8}
-.guide-footer strong{color:var(--gold)}
-@media(max-width:768px){.guide-nav-links{display:none}.two-col{grid-template-columns:1fr}.progress-tracker{display:none}}
+.page-footer{background:var(--dark);padding:36px 24px;text-align:center}
+.page-footer p{color:rgba(255,255,255,0.4);font-size:0.8rem;line-height:1.8}.page-footer strong{color:var(--gold)}
+
+@media(max-width:768px){.flow-grid{grid-template-columns:1fr}.dash-explainer{grid-template-columns:1fr}.pdf-tips{grid-template-columns:1fr}.nav-steps{display:none}}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav class="guide-nav">
-  <div class="guide-nav-logo">ATU <span>Study Hub</span> — Setup Guide</div>
-  <div class="guide-nav-links">
-    <a href="#step-1" class="nav-pill">Photos</a>
-    <a href="#step-2" class="nav-pill">Supabase</a>
-    <a href="#step-3" class="nav-pill">Connect</a>
-    <a href="#step-4" class="nav-pill">Database</a>
-    <a href="#step-5" class="nav-pill">Storage</a>
-    <a href="#step-6" class="nav-pill">Upload PQ</a>
-    <a href="#step-7" class="nav-pill">Deploy</a>
-    <a href="#step-8" class="nav-pill">Checklist</a>
+<!-- TOP NAV -->
+<nav class="top-nav">
+  <div class="nav-logo">ATU <span>Study Hub</span></div>
+  <div class="nav-steps">
+    <a href="#step-photos"   class="nav-step-pill" onclick="setPill(this)">1. Photos</a>
+    <a href="#step-supabase" class="nav-step-pill" onclick="setPill(this)">2. Supabase</a>
+    <a href="#step-connect"  class="nav-step-pill current" onclick="setPill(this)">3. Connect</a>
+    <a href="#step-tables"   class="nav-step-pill" onclick="setPill(this)">4. Tables</a>
+    <a href="#step-storage"  class="nav-step-pill" onclick="setPill(this)">5. Storage</a>
+    <a href="#step-upload"   class="nav-step-pill" onclick="setPill(this)">6. Upload PQs</a>
+    <a href="#step-dashboards" class="nav-step-pill" onclick="setPill(this)">7. Dashboards</a>
+    <a href="#step-deploy"   class="nav-step-pill" onclick="setPill(this)">8. Go Live</a>
+    <a href="#step-pdfs"     class="nav-step-pill" onclick="setPill(this)">9. PDFs</a>
+    <a href="#step-checklist" class="nav-step-pill" onclick="setPill(this)">✅ Checklist</a>
   </div>
 </nav>
 
-<!-- PROGRESS DOTS -->
-<div class="progress-tracker">
-  <div class="progress-dot active" data-label="Photos" onclick="scrollTo('#step-1')"></div>
-  <div class="progress-dot" data-label="Supabase" onclick="scrollTo('#step-2')"></div>
-  <div class="progress-dot" data-label="Connect" onclick="scrollTo('#step-3')"></div>
-  <div class="progress-dot" data-label="Database" onclick="scrollTo('#step-4')"></div>
-  <div class="progress-dot" data-label="Storage" onclick="scrollTo('#step-5')"></div>
-  <div class="progress-dot" data-label="Upload PQs" onclick="scrollTo('#step-6')"></div>
-  <div class="progress-dot" data-label="Deploy" onclick="scrollTo('#step-7')"></div>
-  <div class="progress-dot" data-label="Checklist" onclick="scrollTo('#step-8')"></div>
-</div>
-
 <!-- HERO -->
-<div class="guide-hero">
-  <div class="guide-hero-inner">
-    <div class="hero-badge"><span class="hero-badge-dot"></span> Complete Beginner's Guide</div>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-badge">📘 Complete Setup Guide — v2</div>
     <h1>ATU Study Hub<br><span>Setup Guide</span></h1>
-    <p>You do NOT need to know how to code. Follow each step exactly as shown and your website will be fully working. This guide explains everything in plain English.</p>
+    <p>Follow every step below exactly as shown. You do not need to know coding. This guide assumes you know nothing and explains everything clearly.</p>
+    <div class="hero-badges">
+      <span class="h-badge green">✅ No coding needed</span>
+      <span class="h-badge gold">🆓 Everything is free</span>
+      <span class="h-badge">⏱️ ~45 minutes total</span>
+      <span class="h-badge">📱 Works on mobile</span>
+    </div>
   </div>
 </div>
 
-<!-- BODY -->
-<div class="guide-body">
+<div class="page-body">
 
-  <!-- INTRO CARD -->
-  <div class="card" style="border-left:4px solid var(--gold);margin-bottom:40px">
-    <div class="card-title">👋 Read this first — What you'll need</div>
-    <div class="two-col">
-      <div>
-        <p style="font-size:0.85rem;color:var(--gray);margin-bottom:12px">Before you start, make sure you have:</p>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--green)">✅</span> A computer (Windows, Mac, or Linux)</li>
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--green)">✅</span> A good internet connection</li>
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--green)">✅</span> The ATU Study Hub folder (you have it already)</li>
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--green)">✅</span> Bafiku's photo saved on your computer</li>
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--green)">✅</span> About 30–60 minutes of time</li>
-        </ul>
-      </div>
-      <div>
-        <p style="font-size:0.85rem;color:var(--gray);margin-bottom:12px">Free accounts you'll create:</p>
-        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px">
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--gold)">🔧</span> <strong>Supabase</strong> — Database & file storage</li>
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--gold)">🔧</span> <strong>Netlify</strong> — Put website online</li>
-          <li style="display:flex;align-items:center;gap:8px;font-size:0.84rem"><span style="color:var(--gold)">🔧</span> <strong>GitHub</strong> — Free account for login (optional)</li>
-        </ul>
-        <div style="margin-top:12px;padding:10px;background:var(--green-light);border-radius:8px;font-size:0.78rem;color:var(--green);font-weight:600">💚 Everything is 100% FREE. No credit card needed.</div>
-      </div>
+  <!-- HOW IT ALL WORKS -->
+  <div class="flow-section">
+    <h2 class="flow-title">How Everything <span>Works Together</span></h2>
+    <p class="flow-subtitle">Before you begin, here's a simple overview of all the moving parts.</p>
+    <div class="flow-grid">
+      <div class="flow-card red"><div class="flow-num">1</div><div class="flow-icon">🏛️</div><h4>Your Website (HTML)</h4><p>12 pages stored in the <code>atu-study-hub</code> folder on your computer. These display everything students see.</p></div>
+      <div class="flow-card gold"><div class="flow-num">2</div><div class="flow-icon">🗃️</div><h4>Supabase (Database)</h4><p>A free online service that stores student accounts, past question data, and the actual PDF files.</p></div>
+      <div class="flow-card green"><div class="flow-num">3</div><div class="flow-icon">🌐</div><h4>Netlify (Hosting)</h4><p>Makes your website accessible online so anyone in the world can visit it with a link.</p></div>
+    </div>
+    <div class="callout info" style="margin-top:20px">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>The connection flow</strong>You upload a PDF through the Admin Dashboard → it saves to Supabase Storage → the past-questions page reads from Supabase and shows the card → students login → they can download the PDF. All automatic.</div>
     </div>
   </div>
 
-  <!-- STEP 1 -->
-  <div class="step-section" id="step-1">
-    <div class="step-header">
-      <div class="step-number">1</div>
-      <div class="step-title-wrap">
-        <h2>Add Your Photos</h2>
-        <p>The website needs Bafiku's photo. This step takes 2 minutes.</p>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title">📷 Photo 1: Bafiku's Photo <span class="badge required">Required</span></div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Find Bafiku's best portrait photo on your computer or phone<span class="note">It should be a clear, high-quality photo. Portrait style (tall) works best.</span></div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Rename the photo file to exactly: <strong>bafiku.png</strong><span class="note">On Windows: right-click the file → Rename → type bafiku.png → press Enter<br>On Mac: click once on the file → press Enter → type bafiku.png → press Enter</span></div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Open the <strong>atu-study-hub</strong> folder on your computer</div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Open the <strong>images</strong> folder inside it</div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">Copy and paste <strong>bafiku.png</strong> into the images folder<span class="note">✅ Done! The photo will now appear on the homepage, about page, loader, and login page.</span></div></li>
-      </ul>
-      <div class="callout warning"><div class="callout-icon">⚠️</div><div class="callout-text"><strong>Important about the file name!</strong>The file must be named exactly <code>bafiku.png</code> — lowercase, no spaces. If your photo is .jpg, you can rename it to .png and it will still work on most browsers.</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">📷 Photo 2: Developer Photo <span class="badge optional">Optional</span></div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Get a photo of Ibrahim Mohammed Lotsu (the developer)</div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Rename it to exactly: <strong>developer.png</strong></div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Copy it into the <strong>images</strong> folder<span class="note">This photo appears in the footer section of every page.</span></div></li>
-      </ul>
-    </div>
-  </div>
+  <div class="divider"></div>
 
-  <div class="section-divider"></div>
-
-  <!-- STEP 2 -->
-  <div class="step-section" id="step-2">
+  <!-- STEP 1: PHOTOS -->
+  <div class="step-section" id="step-photos">
     <div class="step-header">
-      <div class="step-number">2</div>
-      <div class="step-title-wrap">
-        <h2>Create Your Supabase Account</h2>
-        <p>Supabase is a free online database where student accounts and past question data are stored.</p>
-      </div>
-    </div>
-    <div class="callout info"><div class="callout-icon">💡</div><div class="callout-text"><strong>What is Supabase?</strong>Think of Supabase like a very powerful Google Sheet that your website can read and write to automatically. When a student signs up, their info goes into Supabase. When you upload a past question, the file goes into Supabase. It is completely FREE for small projects.</div></div>
-    <div class="card">
-      <div class="card-title">🌐 Create your free Supabase account</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Open your browser and go to: <a href="https://supabase.com" target="_blank"><strong>https://supabase.com</strong></a></div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Click the big green button that says <strong>"Start your project"</strong></div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Click <strong>"Sign up"</strong> and choose how to register:<span class="note">Recommended: Click "Continue with GitHub" — it's faster. If you don't have GitHub, go to github.com and create a free account first (takes 2 minutes).</span></div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Follow the prompts until you reach the Supabase dashboard (main page)</div></li>
-      </ul>
+      <div class="step-circle">1</div>
+      <div class="step-head-text"><h2>Add Your Photos</h2><p>Takes about 2 minutes. The website needs these to show correctly.</p></div>
     </div>
     <div class="card">
-      <div class="card-title">🚀 Create your Supabase project</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">On the Supabase dashboard, click the <strong>"New Project"</strong> button</div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Fill in the form:<span class="note"><strong>Project name:</strong> Type <code>atu-study-hub</code><br><strong>Database Password:</strong> Create a strong password. WRITE IT DOWN — you'll need it later!<br><strong>Region:</strong> Choose "West EU (Ireland)" — it's the closest to Ghana</span></div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Click <strong>"Create new project"</strong></div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">⏳ <strong>Wait about 2 minutes</strong> while Supabase sets up your project. You'll see a spinning animation.<span class="note">Don't close the page. Just wait. It will say "Project is ready" when done.</span></div></li>
-      </ul>
-    </div>
-    <div class="card">
-      <div class="card-title">🔑 Find and copy your API keys</div>
-      <div class="callout danger"><div class="callout-icon">🚨</div><div class="callout-text"><strong>This step is very important!</strong> You need two special codes (called API keys) that let your website talk to Supabase. Copy them carefully and keep them safe.</div></div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">In your Supabase project, look at the <strong>left sidebar</strong></div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">At the very bottom of the left sidebar, click the <strong>⚙️ gear icon</strong> (Settings)</div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">In the Settings menu that opens, click <strong>"API"</strong></div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">You will see two values. <strong>Copy BOTH of them</strong> and paste them into a Notepad or Word document:<span class="note"><strong>Value 1 — Project URL:</strong> Looks like <code>https://abcdefgh.supabase.co</code><br><strong>Value 2 — anon / public key:</strong> A very long code starting with <code>eyJ...</code></span></div></li>
-      </ul>
-      <div class="callout warning"><div class="callout-icon">⚠️</div><div class="callout-text"><strong>Do NOT copy the "service_role" key!</strong> Only copy the "anon / public" key. The service_role key is dangerous to put in a website — never share it with anyone.</div></div>
+      <div class="card-title">🖼️ All image files your website uses</div>
       <table class="guide-table">
-        <tr><th>What to copy</th><th>What it looks like</th><th>Where it's labelled</th></tr>
-        <tr><td><strong>Project URL</strong></td><td><code>https://xyz.supabase.co</code></td><td>Under "Project URL"</td></tr>
-        <tr><td><strong>Anon Key</strong></td><td><code>eyJhbGciOi...</code> (very long)</td><td>Under "anon public"</td></tr>
+        <tr><th>File Name</th><th>What it is</th><th>Where to put it</th><th>Required?</th></tr>
+        <tr><td><code>bafiku.png</code></td><td>Bafiku's main portrait photo</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>Bafiku2.jpeg</code></td><td>Second photo of Bafiku</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>developer.jpeg</code></td><td>Ibrahim Mohammed Lotsu (developer)</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>auditorium1.jpeg</code></td><td>ATU Auditorium photo</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>administration1.jpeg</code></td><td>Administration block</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>entrance1.jpeg</code></td><td>ATU main entrance</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>learningcenter1.jpeg</code></td><td>Learning center photo</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>mediahouse1.jpeg</code></td><td>Media house photo</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>Btech1.jpeg</code></td><td>BTech block photo 1</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>Btech2.jpeg</code></td><td>BTech block photo 2</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>fashion1.jpeg</code></td><td>Fashion dept photo 1</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+        <tr><td><code>fashion2.jpeg</code></td><td>Fashion dept photo 2</td><td><code>images/</code> folder</td><td><span class="badge-req">Required</span></td></tr>
+      </table>
+      <div class="callout warn" style="margin-top:12px">
+        <div class="callout-icon">⚠️</div>
+        <div class="callout-body"><strong>File names must match exactly!</strong> Uppercase/lowercase matters. For example <code>Btech1.jpeg</code> will NOT work if you name it <code>btech1.jpeg</code>. If a photo isn't showing, the file name is usually wrong.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- STEP 2: SUPABASE -->
+  <div class="step-section" id="step-supabase">
+    <div class="step-header">
+      <div class="step-circle">2</div>
+      <div class="step-head-text"><h2>Create Supabase Account</h2><p>Free forever. This is where all student accounts and past question data live.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🌐 Create account + project</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">Go to <a href="https://supabase.com" target="_blank"><strong>supabase.com</strong></a> and click <strong>"Start your project"</strong></div></li>
+        <li><div class="s-num">2</div><div class="s-text">Click <strong>"Sign Up"</strong> and sign up with GitHub (free) or email<span class="s-sub">If you don't have GitHub, go to github.com first and create a free account — it takes 2 minutes.</span></div></li>
+        <li><div class="s-num">3</div><div class="s-text">Once logged in, click <strong>"New Project"</strong></div></li>
+        <li><div class="s-num">4</div><div class="s-text">Fill the form:<span class="s-sub"><strong>Project name:</strong> atu-study-hub<br><strong>Database Password:</strong> Create a strong password and WRITE IT DOWN<br><strong>Region:</strong> West EU (Ireland) — closest to Ghana</span></div></li>
+        <li><div class="s-num">5</div><div class="s-text">Click <strong>"Create new project"</strong> and wait 1–2 minutes for it to set up</div></li>
+      </ol>
+    </div>
+    <div class="card">
+      <div class="card-title">🔑 Copy your API Keys (VERY IMPORTANT)</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">In Supabase, look at the left sidebar and click the <strong>⚙️ gear icon</strong> at the very bottom</div></li>
+        <li><div class="s-num">2</div><div class="s-text">Click <strong>"API"</strong> in the settings menu that opens</div></li>
+        <li><div class="s-num">3</div><div class="s-text">Copy BOTH these values and paste them into a Notepad or Word document:<span class="s-sub">📋 <strong>Project URL</strong> — looks like: <code>https://abcdefgh.supabase.co</code><br>📋 <strong>anon / public key</strong> — a very long code starting with <code>eyJ...</code></span></div></li>
+      </ol>
+      <div class="callout danger">
+        <div class="callout-icon">🚨</div>
+        <div class="callout-body"><strong>DO NOT copy the "service_role" key!</strong> Only copy the <strong>anon / public</strong> key. The service_role key is dangerous and must never be put in a website file.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- STEP 3: CONNECT -->
+  <div class="step-section" id="step-connect">
+    <div class="step-header">
+      <div class="step-circle">3</div>
+      <div class="step-head-text"><h2>Connect Supabase to Your Website</h2><p>Paste your keys into 4 files. This is the only time you touch the code.</p></div>
+    </div>
+    <div class="card">
+      <div class="card-title">📝 You must update FOUR files</div>
+      <table class="guide-table">
+        <tr><th>File</th><th>Why</th></tr>
+        <tr><td><code>login.html</code></td><td>So students can log in</td></tr>
+        <tr><td><code>signup.html</code></td><td>So new students can register</td></tr>
+        <tr><td><code>dashboard.html</code></td><td>So Bafiku can upload PDFs (admin)</td></tr>
+        <tr><td><code>user-dashboard.html</code></td><td>So students can view their profile</td></tr>
+        <tr><td><code>past-questions.html</code></td><td>So past questions load from the database</td></tr>
       </table>
     </div>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <!-- STEP 3 -->
-  <div class="step-section" id="step-3">
-    <div class="step-header">
-      <div class="step-number">3</div>
-      <div class="step-title-wrap">
-        <h2>Connect Supabase to Your Website</h2>
-        <p>Paste your API keys into 3 HTML files. This is the only time you'll touch the code.</p>
-      </div>
-    </div>
-    <div class="callout info"><div class="callout-icon">📂</div><div class="callout-text"><strong>Which files to edit:</strong> You need to edit 3 files: <code>login.html</code>, <code>signup.html</code>, and <code>dashboard.html</code>. Do the same thing in all 3.</div></div>
     <div class="card">
-      <div class="card-title">📝 How to open and edit each file</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Right-click on <strong>login.html</strong> inside your atu-study-hub folder<span class="note">On Windows: right-click → "Open with" → Notepad<br>On Mac: right-click → "Open With" → TextEdit<br>Best option: Use VS Code (free download at code.visualstudio.com)</span></div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">The file will open showing a lot of code. Don't panic — you're only changing 2 small lines!</div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Press <strong>Ctrl+F</strong> (Windows) or <strong>Cmd+F</strong> (Mac) to open the Find tool</div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Type <strong>YOUR_SUPABASE_URL</strong> in the search box and press Enter<span class="note">It will jump directly to that line in the code</span></div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">Find the two lines that look like this:</div></li>
-      </ul>
-      <div class="code-label">Find this in the file (near the bottom, in the &lt;script&gt; section):</div>
-      <div class="code-block">
-        <button class="copy-btn" onclick="copyCode(this, `const SUPABASE_URL = 'YOUR_SUPABASE_URL';\nconst SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';`)">Copy</button>
-        <code><span class="keyword">const</span> SUPABASE_URL = <span class="string">'YOUR_SUPABASE_URL'</span>;
-<span class="keyword">const</span> SUPABASE_ANON_KEY = <span class="string">'YOUR_SUPABASE_ANON_KEY'</span>;</code>
+      <div class="card-title">📋 How to edit each file (step by step)</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">Right-click on <strong>login.html</strong> → <strong>"Open with"</strong> → choose <strong>Notepad</strong> (Windows) or <strong>TextEdit</strong> (Mac)<span class="s-sub">Even better: download VS Code free at code.visualstudio.com — it's much easier</span></div></li>
+        <li><div class="s-num">2</div><div class="s-text">Press <strong>Ctrl+F</strong> (Windows) or <strong>Cmd+F</strong> (Mac) to search</div></li>
+        <li><div class="s-num">3</div><div class="s-text">Search for: <code>YOUR_SUPABASE_URL</code></div></li>
+        <li><div class="s-num">4</div><div class="s-text">Find these two lines near the bottom of the file and change them:</div></li>
+      </ol>
+      <div class="code-label">BEFORE (what's already in the file):</div>
+      <div class="code-wrap">
+        <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+        <code><span class="ck">const</span> SUPABASE_URL      = <span class="cs">'YOUR_SUPABASE_URL'</span>;
+<span class="ck">const</span> SUPABASE_ANON_KEY = <span class="cs">'YOUR_SUPABASE_ANON_KEY'</span>;</code>
       </div>
-      <ul class="steps-list" style="margin-top:16px">
-        <li><div class="step-num-sm">6</div><div class="step-text">Replace <code>YOUR_SUPABASE_URL</code> with your actual URL (keep the single quotes!):<span class="note">Example result:</span></div></li>
-      </ul>
-      <div class="code-label">Change it to look like this (use YOUR actual values):</div>
-      <div class="code-block">
-        <code><span class="keyword">const</span> SUPABASE_URL = <span class="string">'https://abcdefghijkl.supabase.co'</span>;
-<span class="keyword">const</span> SUPABASE_ANON_KEY = <span class="string">'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3...'</span>;
-<span class="comment">// ↑ These are YOUR actual values from Supabase Settings → API</span></code>
+      <div class="code-label">AFTER (replace with your real values — keep the quotes!):</div>
+      <div class="code-wrap">
+        <code><span class="ck">const</span> SUPABASE_URL      = <span class="cs">'https://abcxyz.supabase.co'</span>; <span class="cm">// ← your actual URL</span>
+<span class="ck">const</span> SUPABASE_ANON_KEY = <span class="cs">'eyJhbGciOiJIUzI1Ni...'</span>;    <span class="cm">// ← your actual key</span></code>
       </div>
-      <ul class="steps-list" style="margin-top:16px">
-        <li><div class="step-num-sm">7</div><div class="step-text">Press <strong>Ctrl+S</strong> (Windows) or <strong>Cmd+S</strong> (Mac) to <strong>save the file</strong></div></li>
-        <li><div class="step-num-sm">8</div><div class="step-text"><strong>Repeat steps 1–7 for:</strong> <code>signup.html</code> and <code>dashboard.html</code><span class="note">The same 2 lines appear in all 3 files. Change them in each file.</span></div></li>
-      </ul>
-      <div class="callout success"><div class="callout-icon">✅</div><div class="callout-text"><strong>You're done with the code!</strong> That's the only time you need to touch the code files. Everything else is done through the Supabase website and your dashboard.</div></div>
+      <ol class="steps-ol" style="margin-top:12px">
+        <li><div class="s-num">5</div><div class="s-text">Press <strong>Ctrl+S</strong> to save</div></li>
+        <li><div class="s-num">6</div><div class="s-text">Repeat steps 1–5 for: <code>signup.html</code>, <code>dashboard.html</code>, <code>user-dashboard.html</code>, and <code>past-questions.html</code></div></li>
+      </ol>
+      <div class="callout success" style="margin-top:12px">
+        <div class="callout-icon">✅</div>
+        <div class="callout-body"><strong>That's the only code editing you'll ever do!</strong> Everything else after this is done through the Supabase website and your admin dashboard — no code.</div>
+      </div>
     </div>
   </div>
 
-  <div class="section-divider"></div>
+  <div class="divider"></div>
 
-  <!-- STEP 4 -->
-  <div class="step-section" id="step-4">
+  <!-- STEP 4: TABLES -->
+  <div class="step-section" id="step-tables">
     <div class="step-header">
-      <div class="step-number">4</div>
-      <div class="step-title-wrap">
-        <h2>Create the Database Tables</h2>
-        <p>Tables are like spreadsheets inside Supabase. You need 2 of them.</p>
-      </div>
+      <div class="step-circle">4</div>
+      <div class="step-head-text"><h2>Create the Database Tables</h2><p>Tables are like spreadsheets inside Supabase. Create 2 of them.</p></div>
     </div>
     <div class="card">
-      <div class="card-title">📋 Table 1: <code>users</code> — stores student accounts</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">In your Supabase project, click <strong>"Table Editor"</strong> in the left sidebar (it looks like a grid icon 🗃️)</div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Click the green <strong>"Create a new table"</strong> button</div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">In the <strong>"Name"</strong> field, type exactly: <code>users</code></div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Find the toggle that says <strong>"Enable Row Level Security (RLS)"</strong> and turn it <strong>OFF</strong> for now<span class="note">You can enable security later once everything is working</span></div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">You'll see a table with an <code>id</code> column already there — that's fine, keep it</div></li>
-        <li><div class="step-num-sm">6</div><div class="step-text">Click <strong>"Add Column"</strong> and add each of these columns one by one:</div></li>
-      </ul>
-      <table class="guide-table">
-        <tr><th>Column Name</th><th>Type</th><th>Extra settings</th></tr>
-        <tr><td><code>email</code></td><td>text</td><td>Leave blank</td></tr>
-        <tr><td><code>name</code></td><td>text</td><td>Leave blank</td></tr>
-        <tr><td><code>phone</code></td><td>text</td><td>Leave blank</td></tr>
-        <tr><td><code>faculty</code></td><td>text</td><td>Leave blank</td></tr>
-        <tr><td><code>level</code></td><td>text</td><td>Leave blank</td></tr>
-        <tr><td><code>created_at</code></td><td>timestamptz</td><td>Set Default Value to: <code>now()</code></td></tr>
+      <div class="card-title">📋 Table 1: <code>users</code> — stores student profiles</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">In Supabase, click <strong>"Table Editor"</strong> in the left sidebar</div></li>
+        <li><div class="s-num">2</div><div class="s-text">Click <strong>"Create a new table"</strong></div></li>
+        <li><div class="s-num">3</div><div class="s-text">Set <strong>Name</strong> to: <code>users</code></div></li>
+        <li><div class="s-num">4</div><div class="s-text">Turn OFF <strong>"Enable Row Level Security (RLS)"</strong></div></li>
+        <li><div class="s-num">5</div><div class="s-text">Add these columns by clicking <strong>"Add Column"</strong> for each:</div></li>
+      </ol>
+      <table class="guide-table" style="margin-top:8px">
+        <tr><th>Column Name</th><th>Type</th><th>Default Value</th></tr>
+        <tr><td><code>email</code></td><td>text</td><td>—</td></tr>
+        <tr><td><code>name</code></td><td>text</td><td>—</td></tr>
+        <tr><td><code>phone</code></td><td>text</td><td>—</td></tr>
+        <tr><td><code>faculty</code></td><td>text</td><td>—</td></tr>
+        <tr><td><code>level</code></td><td>text</td><td>—</td></tr>
+        <tr><td><code>created_at</code></td><td>timestamptz</td><td><code>now()</code></td></tr>
       </table>
-      <ul class="steps-list" style="margin-top:16px">
-        <li><div class="step-num-sm">7</div><div class="step-text">Click the <strong>"Save"</strong> button at the bottom<span class="note">✅ Your users table is ready!</span></div></li>
-      </ul>
+      <ol class="steps-ol" style="margin-top:8px">
+        <li><div class="s-num">6</div><div class="s-text">Click <strong>"Save"</strong></div></li>
+      </ol>
     </div>
     <div class="card">
-      <div class="card-title">📋 Table 2: <code>past_questions</code> — stores info about uploaded PDFs</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Click <strong>"Create a new table"</strong> again</div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">In the Name field, type exactly: <code>past_questions</code></div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Turn OFF Row Level Security (same as before)</div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Add these columns:</div></li>
-      </ul>
-      <table class="guide-table">
+      <div class="card-title">📋 Table 2: <code>past_questions</code> — stores info about each uploaded PDF</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">Click <strong>"Create a new table"</strong> again</div></li>
+        <li><div class="s-num">2</div><div class="s-text">Set <strong>Name</strong> to: <code>past_questions</code></div></li>
+        <li><div class="s-num">3</div><div class="s-text">Turn OFF RLS. Add these columns:</div></li>
+      </ol>
+      <table class="guide-table" style="margin-top:8px">
         <tr><th>Column Name</th><th>Type</th><th>Default Value</th></tr>
         <tr><td><code>title</code></td><td>text</td><td>—</td></tr>
         <tr><td><code>faculty</code></td><td>text</td><td>—</td></tr>
@@ -355,287 +364,324 @@ a{color:var(--red);text-decoration:none}a:hover{text-decoration:underline}
         <tr><td><code>downloads</code></td><td>int4</td><td><code>0</code></td></tr>
         <tr><td><code>created_at</code></td><td>timestamptz</td><td><code>now()</code></td></tr>
       </table>
-      <ul class="steps-list" style="margin-top:16px">
-        <li><div class="step-num-sm">5</div><div class="step-text">Click <strong>"Save"</strong><span class="note">✅ Both tables are ready!</span></div></li>
-      </ul>
+      <ol class="steps-ol" style="margin-top:8px">
+        <li><div class="s-num">4</div><div class="s-text">Click <strong>"Save"</strong> ✅</div></li>
+      </ol>
     </div>
   </div>
 
-  <div class="section-divider"></div>
+  <div class="divider"></div>
 
-  <!-- STEP 5 -->
-  <div class="step-section" id="step-5">
+  <!-- STEP 5: STORAGE -->
+  <div class="step-section" id="step-storage">
     <div class="step-header">
-      <div class="step-number">5</div>
-      <div class="step-title-wrap">
-        <h2>Create File Storage Bucket</h2>
-        <p>This is the online folder where all your PDF past questions will be stored.</p>
-      </div>
+      <div class="step-circle">5</div>
+      <div class="step-head-text"><h2>Create File Storage Bucket</h2><p>This is the online folder where PDF files are stored when you upload them.</p></div>
     </div>
     <div class="card">
-      <div class="card-title">🗂️ Create the "past-questions" bucket</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">In Supabase, click <strong>"Storage"</strong> in the left sidebar (it looks like a database icon)</div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Click the <strong>"New bucket"</strong> button</div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">In the <strong>Bucket name</strong> field, type exactly: <code>past-questions</code><span class="note">⚠️ Use a hyphen ( - ) between the words, NOT a space. Spelling must be exact!</span></div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Find the toggle that says <strong>"Public bucket"</strong> and turn it <strong>ON</strong><span class="note">This allows students to download PDFs without needing to log in</span></div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">Click <strong>"Create bucket"</strong></div></li>
-        <li><div class="step-num-sm">6</div><div class="step-text">Your bucket is created! Now set permissions. Click on <strong>"Policies"</strong> tab inside the bucket</div></li>
-        <li><div class="step-num-sm">7</div><div class="step-text">Click <strong>"New Policy"</strong> → Select <strong>"For full customization"</strong></div></li>
-        <li><div class="step-num-sm">8</div><div class="step-text">Set:<br>
-          • Policy name: <code>allow_all</code><br>
-          • Check boxes: ✅ SELECT ✅ INSERT<br>
-          • Target roles: select <code>anon</code> and <code>authenticated</code></div></li>
-        <li><div class="step-num-sm">9</div><div class="step-text">Click <strong>"Review"</strong> → <strong>"Save policy"</strong></div></li>
-      </ul>
-      <div class="callout success"><div class="callout-icon">✅</div><div class="callout-text"><strong>Storage is ready!</strong> When you upload a PDF through the dashboard, it will be saved here automatically and a download link will be created.</div></div>
+      <div class="card-title">🗂️ Create the <code>past-questions</code> bucket</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">In Supabase, click <strong>"Storage"</strong> in the left sidebar</div></li>
+        <li><div class="s-num">2</div><div class="s-text">Click <strong>"New bucket"</strong></div></li>
+        <li><div class="s-num">3</div><div class="s-text">Type the name: <code>past-questions</code><span class="s-sub">⚠️ Must use a hyphen ( - ) not a space. Must be exactly this spelling.</span></div></li>
+        <li><div class="s-num">4</div><div class="s-text">Turn ON the toggle called <strong>"Public bucket"</strong></div></li>
+        <li><div class="s-num">5</div><div class="s-text">Click <strong>"Create bucket"</strong></div></li>
+        <li><div class="s-num">6</div><div class="s-text">Click on your new bucket → click <strong>"Policies"</strong> tab → click <strong>"New Policy"</strong></div></li>
+        <li><div class="s-num">7</div><div class="s-text">Select <strong>"For full customization"</strong><span class="s-sub">Policy name: <code>allow_all</code> | Check: ✅ SELECT ✅ INSERT | Target roles: anon, authenticated</span></div></li>
+        <li><div class="s-num">8</div><div class="s-text">Click <strong>"Review"</strong> → <strong>"Save policy"</strong> ✅</div></li>
+      </ol>
     </div>
   </div>
 
-  <div class="section-divider"></div>
+  <div class="divider"></div>
 
-  <!-- STEP 6 -->
-  <div class="step-section" id="step-6">
+  <!-- STEP 6: UPLOAD -->
+  <div class="step-section" id="step-upload">
     <div class="step-header">
-      <div class="step-number">6</div>
-      <div class="step-title-wrap">
-        <h2>Upload Past Questions (No Coding!)</h2>
-        <p>This is the most important step for Bafiku. Two easy methods — pick whichever you prefer.</p>
-      </div>
+      <div class="step-circle">6</div>
+      <div class="step-head-text"><h2>Upload Past Questions</h2><p>How to add PDFs so they appear on the website. No coding required.</p></div>
     </div>
-
-    <!-- METHOD 1 -->
-    <div class="card" style="border-top:4px solid var(--gold)">
-      <div class="card-title">⭐ METHOD 1: Upload through the Dashboard (Easiest)</div>
-      <div class="callout success"><div class="callout-icon">🎉</div><div class="callout-text"><strong>This is what Bafiku uses day-to-day!</strong> Once the website is live, just open the dashboard page, fill in a form, and click upload. No coding at all.</div></div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Open your browser and go to your website's dashboard page:<span class="note">Example: <code>https://atu-study-hub.netlify.app/dashboard.html</code><br>Or locally: Open <code>dashboard.html</code> in your browser</span></div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Log in with your email and password (the admin account you created via signup.html)</div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">On the left side of the screen, you'll see the <strong>"Upload Past Question"</strong> form</div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Fill in the form fields:<br>
-          <span class="note">
-            📝 <strong>Course/Paper Title:</strong> Type the full name, e.g. "Engineering Mathematics I – Final Exam"<br>
-            🏛️ <strong>Faculty:</strong> Select from dropdown (e.g. "Engineering")<br>
-            🏫 <strong>Department:</strong> Type department name (e.g. "Civil Engineering") — optional<br>
-            📂 <strong>Level:</strong> Select from dropdown (e.g. "Level 100")<br>
-            📅 <strong>Year:</strong> Select the exam year (e.g. "2023")
-          </span>
-        </div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">Click the <strong>upload box</strong> (the dashed rectangle that says "Click to choose PDF")<span class="note">A file browser opens — find your PDF on your computer and select it<br>OR drag and drop the PDF directly onto the dashed box</span></div></li>
-        <li><div class="step-num-sm">6</div><div class="step-text">Click the red <strong>"Upload Past Question"</strong> button</div></li>
-        <li><div class="step-num-sm">7</div><div class="step-text">Watch the <strong>progress bar</strong> fill up — this shows the upload happening<span class="note">Depending on internet speed, a 5MB PDF takes about 5–15 seconds</span></div></li>
-        <li><div class="step-num-sm">8</div><div class="step-text">You'll see a green ✅ success message — the past question is now <strong>LIVE on your website!</strong></div></li>
-        <li><div class="step-num-sm">9</div><div class="step-text">To upload another one, just fill the form again and repeat<span class="note">You can upload as many as you want, one by one</span></div></li>
-      </ul>
+    <div class="callout success">
+      <div class="callout-icon">🎉</div>
+      <div class="callout-body"><strong>This is how Bafiku uploads past questions day-to-day!</strong> Once the website is live, just open the Admin Dashboard, fill in a simple form, and click upload. The PDF appears on the website instantly.</div>
     </div>
-
-    <!-- METHOD 2 -->
     <div class="card">
-      <div class="card-title">📁 METHOD 2: Upload directly through Supabase (Alternative)</div>
-      <p style="font-size:0.84rem;color:var(--gray);margin-bottom:16px">Use this if the dashboard isn't working or you want to do it manually.</p>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">A</div><div class="step-text"><strong>Upload the PDF file first:</strong><span class="note">Go to Supabase → Storage → past-questions bucket → Click "Upload files" → Select your PDF → Wait for upload to finish → Click on the uploaded file → Click "Get URL" or "Copy URL" → Save that URL</span></div></li>
-        <li><div class="step-num-sm">B</div><div class="step-text"><strong>Then add the record to the database:</strong><span class="note">Go to Supabase → Table Editor → Click "past_questions" table → Click "Insert row" → Fill in: title, faculty, department, level, year, file_url (paste the URL from step A) → Click "Save"</span></div></li>
-      </ul>
-      <div class="callout info"><div class="callout-icon">💡</div><div class="callout-text"><strong>Method 1 does BOTH of these steps automatically</strong> with one button click. Method 2 is just if you need to upload without using your website.</div></div>
+      <div class="card-title">📤 How to upload through the Admin Dashboard</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">Open your browser and go to: <strong>yourwebsite.netlify.app/dashboard.html</strong></div></li>
+        <li><div class="s-num">2</div><div class="s-text">Log in with your <strong>admin</strong> email and password</div></li>
+        <li><div class="s-num">3</div><div class="s-text">On the left side you'll see the <strong>Upload Past Question</strong> form. Fill it in:<span class="s-sub">📝 <strong>Title:</strong> e.g. "Engineering Mathematics I – Final Exam"<br>🏛️ <strong>Faculty:</strong> Select from dropdown<br>🏫 <strong>Department:</strong> e.g. Civil Engineering (optional)<br>📂 <strong>Level:</strong> Level 100, HND 1, etc.<br>📅 <strong>Year:</strong> 2023, 2024, etc.</span></div></li>
+        <li><div class="s-num">4</div><div class="s-text">Click the dashed box to choose your PDF from your computer (or drag & drop it)</div></li>
+        <li><div class="s-num">5</div><div class="s-text">Click <strong>"⬆️ Upload Past Question"</strong> and watch the progress bar</div></li>
+        <li><div class="s-num">6</div><div class="s-text">When you see ✅ success — the past question is <strong>LIVE on the website immediately!</strong></div></li>
+        <li><div class="s-num">7</div><div class="s-text">Go to <strong>past-questions.html</strong> → click <strong>"🆕 Recently Added"</strong> tab to see it appear at the top</div></li>
+      </ol>
+    </div>
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Why does "Recently Added" work now?</strong> The past-questions page now connects directly to Supabase. When you upload a PDF through the dashboard, it saves to the <code>past_questions</code> table with a timestamp. The "Recently Added" tab filters for questions uploaded in the last 7 days, sorted newest first.</div>
     </div>
   </div>
 
-  <div class="section-divider"></div>
+  <div class="divider"></div>
 
-  <!-- STEP 7 -->
-  <div class="step-section" id="step-7">
+  <!-- STEP 7: DASHBOARDS -->
+  <div class="step-section" id="step-dashboards">
     <div class="step-header">
-      <div class="step-number">7</div>
-      <div class="step-title-wrap">
-        <h2>Put Your Website Online</h2>
-        <p>Deploy to Netlify — free hosting so anyone can visit your website from anywhere.</p>
+      <div class="step-circle">7</div>
+      <div class="step-head-text"><h2>Two Dashboards Explained</h2><p>There are now two separate dashboards — one for Bafiku (admin) and one for students.</p></div>
+    </div>
+    <div class="dash-explainer">
+      <div class="dash-box">
+        <h4>🔴 Admin Dashboard (<code>dashboard.html</code>)</h4>
+        <p style="font-size:0.78rem;color:var(--gray);margin-bottom:12px">For <strong>Bafiku only</strong>. Only Bafiku should have the login details for this.</p>
+        <ul>
+          <li>Upload new past question PDFs</li>
+          <li>Set faculty, department, level, year for each PDF</li>
+          <li>See stats (total questions, students, downloads)</li>
+          <li>Quick actions and shortcuts</li>
+          <li>Link to WhatsApp for campaign</li>
+        </ul>
+        <div style="margin-top:12px;padding:10px;background:rgba(200,16,46,0.06);border-radius:8px;font-size:0.75rem;color:var(--red)">
+          🔐 URL: <code>yoursite.netlify.app/dashboard.html</code>
+        </div>
+      </div>
+      <div class="dash-box user-box">
+        <h4>🟡 Student Dashboard (<code>user-dashboard.html</code>)</h4>
+        <p style="font-size:0.78rem;color:var(--gray);margin-bottom:12px">For <strong>all registered students</strong>. Students are redirected here after login/signup.</p>
+        <ul>
+          <li>Welcome message with their name</li>
+          <li>Quick access to past questions</li>
+          <li>Edit their profile (name, phone, faculty, level)</li>
+          <li>Change their password</li>
+          <li>Campaign support section</li>
+          <li>Contact Bafiku directly</li>
+        </ul>
+        <div style="margin-top:12px;padding:10px;background:rgba(245,166,35,0.08);border-radius:8px;font-size:0.75rem;color:#b45309">
+          🔗 URL: <code>yoursite.netlify.app/user-dashboard.html</code>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">🚀 Deploy to Netlify (Free, No Credit Card)</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">Open your browser and go to <a href="https://netlify.com" target="_blank"><strong>https://netlify.com</strong></a></div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Click <strong>"Sign up"</strong> → Sign up with GitHub (or your email)</div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">After signing in, you'll see the Netlify dashboard</div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Look for the area that says <strong>"Sites"</strong> and find the drag-and-drop upload area at the bottom<span class="note">It usually says: "Want to deploy a new site without connecting to Git? Drag and drop your site's output folder here"</span></div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">Open your File Manager (My Computer/Finder) and find the <strong>atu-study-hub</strong> folder</div></li>
-        <li><div class="step-num-sm">6</div><div class="step-text"><strong>Drag the entire atu-study-hub folder</strong> and drop it onto the Netlify page<span class="note">Make sure you're dragging the whole folder, not just one file inside it</span></div></li>
-        <li><div class="step-num-sm">7</div><div class="step-text">⏳ Wait about 30–60 seconds for the upload to finish</div></li>
-        <li><div class="step-num-sm">8</div><div class="step-text">Netlify will give you a link like: <code>https://amazing-falcon-123456.netlify.app</code><span class="note">Click it to see your live website! Share this link with students.</span></div></li>
-      </ul>
-      <div class="callout success"><div class="callout-icon">🎉</div><div class="callout-text"><strong>Your website is now LIVE!</strong> Anyone with the link can visit it. Share it on WhatsApp, Instagram, TikTok — everywhere!</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title">✏️ Give your website a better link</div>
-      <ul class="steps-list">
-        <li><div class="step-num-sm">1</div><div class="step-text">In Netlify, click on your site name</div></li>
-        <li><div class="step-num-sm">2</div><div class="step-text">Click <strong>"Site configuration"</strong> or <strong>"Site settings"</strong></div></li>
-        <li><div class="step-num-sm">3</div><div class="step-text">Find <strong>"Site name"</strong> and click <strong>"Change site name"</strong></div></li>
-        <li><div class="step-num-sm">4</div><div class="step-text">Type: <code>atu-study-hub</code> (or <code>bafiku-study-hub</code>, etc.)</div></li>
-        <li><div class="step-num-sm">5</div><div class="step-text">Click <strong>Save</strong> — your new URL is: <code>https://atu-study-hub.netlify.app</code></div></li>
-      </ul>
-      <div class="callout info"><div class="callout-icon">🔄</div><div class="callout-text"><strong>How to update the website later:</strong> When you change any HTML files, just drag the whole atu-study-hub folder onto Netlify again. It replaces the old version automatically.</div></div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-title">🔒 Login Required to Download — How It Works</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">✦</div><div class="s-text">A student visits the past-questions page and sees all the cards</div></li>
+        <li><div class="s-num">✦</div><div class="s-text">If they are <strong>not logged in</strong>, they see a red banner at the top and a 🔒 lock icon on every download button</div></li>
+        <li><div class="s-num">✦</div><div class="s-text">When they click a locked button, a <strong>popup modal</strong> appears: "Login Required — create a free account to download"</div></li>
+        <li><div class="s-num">✦</div><div class="s-text">They click "Create Free Account" → fills in the signup form → redirected to their student dashboard</div></li>
+        <li><div class="s-num">✦</div><div class="s-text">Now when they visit the past-questions page, all buttons show <strong>"⬇️ Download"</strong> in red and work properly</div></li>
+      </ol>
     </div>
   </div>
 
-  <div class="section-divider"></div>
+  <div class="divider"></div>
 
-  <!-- STEP 8 — CHECKLIST -->
-  <div class="step-section" id="step-8">
+  <!-- STEP 8: DEPLOY -->
+  <div class="step-section" id="step-deploy">
     <div class="step-header">
-      <div class="step-number">8</div>
-      <div class="step-title-wrap">
-        <h2>Final Checklist — Before Going Live</h2>
-        <p>Click each item to mark it as done. Make sure every box is ticked!</p>
-      </div>
+      <div class="step-circle">8</div>
+      <div class="step-head-text"><h2>Put Your Website Online</h2><p>Free hosting with Netlify. Your site gets a public URL students can visit.</p></div>
     </div>
     <div class="card">
-      <div class="card-title">✅ Photos</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Added bafiku.png to the images folder</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Photo is named exactly "bafiku.png" (lowercase, .png extension)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Photo appears on homepage when I open index.html in browser</div></div>
+      <div class="card-title">🚀 Deploy to Netlify (Free)</div>
+      <ol class="steps-ol">
+        <li><div class="s-num">1</div><div class="s-text">Go to <a href="https://netlify.com" target="_blank"><strong>netlify.com</strong></a> and create a free account</div></li>
+        <li><div class="s-num">2</div><div class="s-text">After signing in, look for the drag-and-drop area that says <strong>"Drop your site folder here"</strong></div></li>
+        <li><div class="s-num">3</div><div class="s-text">Open your File Manager on your computer, find the <strong>atu-study-hub</strong> folder</div></li>
+        <li><div class="s-num">4</div><div class="s-text"><strong>Drag the entire atu-study-hub folder</strong> and drop it on the Netlify page<span class="s-sub">⚠️ Drag the whole folder, not individual files inside it</span></div></li>
+        <li><div class="s-num">5</div><div class="s-text">Wait 30–60 seconds → Netlify gives you a URL like: <code>https://random-name.netlify.app</code></div></li>
+        <li><div class="s-num">6</div><div class="s-text">To get a nicer URL: Netlify → your site → Site Configuration → Change site name → type <code>atu-study-hub</code></div></li>
+        <li><div class="s-num">7</div><div class="s-text">Share the link! Done ✅</div></li>
+      </ol>
+      <div class="callout info" style="margin-top:12px">
+        <div class="callout-icon">🔄</div>
+        <div class="callout-body"><strong>To update the site later:</strong> Just drag the atu-study-hub folder onto Netlify again. It replaces the old version automatically. Changes appear within 30 seconds.</div>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">✅ Supabase Setup</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created Supabase account at supabase.com</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created a new project called "atu-study-hub"</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Copied my Project URL (https://xxxx.supabase.co)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Copied my anon/public API key (the long eyJ... string)</div></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- STEP 9: PDF SIZES -->
+  <div class="step-section" id="step-pdfs">
+    <div class="step-header">
+      <div class="step-circle">9</div>
+      <div class="step-head-text"><h2>Solving the Large PDF Problem</h2><p>PDFs over 5MB are slow to upload and download. Here's exactly what to do.</p></div>
+    </div>
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body"><strong>Why large PDFs are a problem:</strong> Students on mobile data in Ghana often have slow connections. A 15MB PDF could take 2+ minutes to download. Compressing it to 1MB makes it download in seconds. Also, Supabase's free plan has a 1GB storage limit — compressed PDFs let you store 10x more.</div>
+    </div>
+    <div class="pdf-tips">
+      <div class="pdf-tip">
+        <div class="pt-icon">🗜️</div>
+        <h4>Compress It (Best Option)</h4>
+        <p>Go to <a href="https://ilovepdf.com/compress_pdf" target="_blank">ilovepdf.com/compress_pdf</a> — free, no sign-up. Upload your PDF, compress it, download. A 15MB PDF often becomes 1–2MB with no visible quality loss.</p>
+      </div>
+      <div class="pdf-tip">
+        <div class="pt-icon">📐</div>
+        <h4>Target Size</h4>
+        <p>Aim for <strong>under 3MB</strong> per past question file. Under 1MB is ideal. Most scanned exam papers should compress to under 2MB.</p>
+      </div>
+      <div class="pdf-tip">
+        <div class="pt-icon">🔗</div>
+        <h4>Use Google Drive Link</h4>
+        <p>For very large files, upload to Google Drive, make it public, and paste the download link into the <code>file_url</code> field in the Supabase <code>past_questions</code> table directly.</p>
       </div>
     </div>
-    <div class="card">
-      <div class="card-title">✅ Code Connection</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Replaced YOUR_SUPABASE_URL in login.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Replaced YOUR_SUPABASE_ANON_KEY in login.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Replaced YOUR_SUPABASE_URL in signup.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Replaced YOUR_SUPABASE_ANON_KEY in signup.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Replaced YOUR_SUPABASE_URL in dashboard.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Replaced YOUR_SUPABASE_ANON_KEY in dashboard.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Saved all 3 files after editing (Ctrl+S)</div></div>
-      </div>
+    <div class="callout success" style="margin-top:20px">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body"><strong>Google Drive download link format:</strong><br>Get the file ID from the share link: <code>drive.google.com/file/d/<strong>FILE_ID</strong>/view</code><br>Then use this as your download URL: <code>https://drive.google.com/uc?export=download&id=<strong>FILE_ID</strong></code></div>
     </div>
-    <div class="card">
-      <div class="card-title">✅ Database Tables</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created the "users" table in Supabase with all columns</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created the "past_questions" table in Supabase with all columns</div></div>
-      </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CHECKLIST -->
+  <div class="step-section" id="step-checklist">
+    <div class="step-header">
+      <div class="step-circle" style="font-size:1rem">✅</div>
+      <div class="step-head-text"><h2>Final Checklist</h2><p>Click each item as you complete it. All boxes must be green before going live.</p></div>
     </div>
-    <div class="card">
-      <div class="card-title">✅ File Storage</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created "past-questions" bucket in Supabase Storage (with hyphen)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Set the bucket to Public</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Set bucket policy to allow SELECT and INSERT</div></div>
-      </div>
+
+    <div class="check-group-title">📷 Photos & Images</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Copied all 12 image files into the <code>images/</code> folder</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">bafiku.png is named correctly and shows on the homepage</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">developer.jpeg is in the images folder (shows in About page)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Hero swiper on homepage shows all 5 campus photos</div></div>
     </div>
-    <div class="card">
-      <div class="card-title">✅ Content</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Added Google Drive video ID to index.html (replaced FILE_ID)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Verified WhatsApp numbers are correct (233536801965 and 233544823484)</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Tested the contact form — it opens WhatsApp correctly</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created an admin account via signup.html</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Successfully logged into dashboard.html with admin account</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Uploaded at least 3 sample past questions through the dashboard</div></div>
-      </div>
+
+    <div class="check-group-title">🗃️ Supabase Setup</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created Supabase account and new project</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Copied Project URL (https://xxxx.supabase.co)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Copied anon/public API Key (the eyJ... string)</div></div>
     </div>
-    <div class="card">
-      <div class="card-title">✅ Deployment</div>
-      <div class="checklist">
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created Netlify account</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Dragged atu-study-hub folder onto Netlify</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Website is live at a Netlify URL</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Tested website on mobile phone — looks good!</div></div>
-        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Shared the link with at least 5 students for testing</div></div>
-      </div>
+
+    <div class="check-group-title">🔗 Code Connection</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Updated SUPABASE_URL and SUPABASE_ANON_KEY in <strong>login.html</strong></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Updated SUPABASE_URL and SUPABASE_ANON_KEY in <strong>signup.html</strong></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Updated SUPABASE_URL and SUPABASE_ANON_KEY in <strong>dashboard.html</strong></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Updated SUPABASE_URL and SUPABASE_ANON_KEY in <strong>user-dashboard.html</strong></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Updated SUPABASE_URL and SUPABASE_ANON_KEY in <strong>past-questions.html</strong></div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Saved all 5 files after editing (Ctrl+S)</div></div>
     </div>
-    <div id="completion-banner" style="display:none;background:linear-gradient(135deg,var(--green),#15803d);border-radius:var(--radius);padding:32px;text-align:center;margin-top:24px">
+
+    <div class="check-group-title">📊 Database Tables</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created <code>users</code> table with all 6 columns</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created <code>past_questions</code> table with all 8 columns</div></div>
+    </div>
+
+    <div class="check-group-title">🗂️ File Storage</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created <code>past-questions</code> bucket (with hyphen) in Supabase Storage</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Set bucket to Public</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Set bucket policy: SELECT + INSERT allowed for anon and authenticated</div></div>
+    </div>
+
+    <div class="check-group-title">🧪 Testing</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created a student account via signup.html — redirected to student dashboard ✅</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Created an admin account via signup.html (Bafiku's account)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Logged in as admin → opened dashboard.html successfully</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Uploaded 1 test PDF through dashboard.html</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Visited past-questions.html → new PDF appears on the page ✅</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Checked "Recently Added" tab — uploaded PDF appears at the top ✅</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Logged out → visited past-questions.html → download buttons show 🔒 lock icon ✅</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Clicked a locked button → login modal popup appeared ✅</div></div>
+    </div>
+
+    <div class="check-group-title">🌐 Deployment</div>
+    <div class="checklist">
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Dragged atu-study-hub folder onto Netlify</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Website is accessible at a live URL</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Tested on mobile phone — looks good and works correctly</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Added Google Drive video ID to index.html (replaced FILE_ID)</div></div>
+      <div class="check-item" onclick="toggleCheck(this)"><div class="check-box"></div><div class="check-label">Shared live link on WhatsApp, Instagram, TikTok</div></div>
+    </div>
+
+    <div id="done-banner">
       <div style="font-size:3rem;margin-bottom:12px">🎉</div>
-      <h3 style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:var(--white);letter-spacing:2px;margin-bottom:8px">ALL DONE! YOUR WEBSITE IS READY!</h3>
-      <p style="color:rgba(255,255,255,0.85);font-size:0.9rem">Share the link with ATU students and let the campaign begin! #BringBafikusBack 🗳️</p>
+      <h2>ALL DONE! YOUR WEBSITE IS LIVE!</h2>
+      <p>ATU Study Hub is ready. Students can sign up, log in, and download past questions. Bafiku can upload new PDFs anytime through the Admin Dashboard. Go share the link!</p>
+      <a href="index.html" class="btn-done">🏠 Go to Homepage →</a>
     </div>
   </div>
 
   <!-- QUICK REFERENCE -->
-  <div class="card" style="margin-top:20px;border-top:4px solid var(--gold)">
+  <div class="card">
     <div class="card-title">⚡ Quick Reference — Day-to-Day Tasks</div>
     <table class="guide-table">
       <tr><th>What you want to do</th><th>How to do it</th></tr>
-      <tr><td>📤 Upload a new past question</td><td>Login → dashboard.html → Fill form → Upload</td></tr>
+      <tr><td>📤 Upload a new past question PDF</td><td>Login as admin → <code>dashboard.html</code> → Fill form → Upload</td></tr>
+      <tr><td>🆕 See newly uploaded PDFs on site</td><td><code>past-questions.html</code> → click "Recently Added" tab</td></tr>
       <tr><td>👥 See all registered students</td><td>Supabase → Authentication → Users</td></tr>
-      <tr><td>📄 See all uploaded past questions</td><td>Supabase → Table Editor → past_questions</td></tr>
-      <tr><td>🗂️ See all PDF files</td><td>Supabase → Storage → past-questions bucket</td></tr>
-      <tr><td>✏️ Change website text</td><td>Open the HTML file in Notepad → Edit → Save → Re-upload to Netlify</td></tr>
-      <tr><td>📷 Change Bafiku's photo</td><td>Replace bafiku.png in images folder → Re-upload to Netlify</td></tr>
-      <tr><td>🔄 Update live website</td><td>Drag atu-study-hub folder onto Netlify again</td></tr>
-      <tr><td>😴 Supabase project paused?</td><td>Go to supabase.com → your project → click "Restore project"</td></tr>
+      <tr><td>📄 See all past question records</td><td>Supabase → Table Editor → <code>past_questions</code></td></tr>
+      <tr><td>🗂️ See all uploaded PDF files</td><td>Supabase → Storage → <code>past-questions</code> bucket</td></tr>
+      <tr><td>✏️ Change any text on the website</td><td>Open HTML file → edit text → save → re-upload to Netlify</td></tr>
+      <tr><td>📷 Replace a photo</td><td>Put new image in <code>images/</code> folder with same filename → re-upload to Netlify</td></tr>
+      <tr><td>🔄 Update the live website</td><td>Drag atu-study-hub folder onto Netlify again</td></tr>
+      <tr><td>😴 Supabase project paused?</td><td>Go to supabase.com → click your project → click "Restore project" (free)</td></tr>
+      <tr><td>📦 Compress a large PDF</td><td>Go to <a href="https://ilovepdf.com/compress_pdf" target="_blank">ilovepdf.com/compress_pdf</a> → compress → re-upload</td></tr>
     </table>
   </div>
 
-</div>
+</div><!-- end page-body -->
 
 <!-- FOOTER -->
-<div class="guide-footer">
+<div class="page-footer">
   <p>📚 <strong>ATU Study Hub</strong> — Powered by Bafiku Emmanuel | ATU-SRC President Hopeful 2026</p>
-  <p style="margin-top:8px">Built with ❤️ for ATU Students by <strong>Ibrahim Mohammed Lotsu (Ibratech)</strong></p>
-  <p style="margin-top:8px">Campaign: 053 680 1965 · 054 482 3484 | 📸 @mr.bafiku | 🎵 @mr.bafiku1</p>
+  <p>Built with ❤️ for ATU Students by <strong>Ibrahim Mohammed Lotsu (Ibratech)</strong></p>
+  <p>Campaign: 053 680 1965 · 054 482 3484 | 📸 @mr.bafiku | 🎵 @mr.bafiku1</p>
 </div>
 
 <script>
-// Toggle checklist items
+// Checklist toggle
 function toggleCheck(el) {
   el.classList.toggle('done');
-  const box = el.querySelector('.check-box');
-  box.textContent = el.classList.contains('done') ? '✓' : '';
-  // Check if all done
-  const all = document.querySelectorAll('.check-item');
-  const done = document.querySelectorAll('.check-item.done');
-  if (all.length === done.length) {
-    document.getElementById('completion-banner').style.display = 'block';
-    document.getElementById('completion-banner').scrollIntoView({behavior:'smooth'});
+  el.querySelector('.check-box').textContent = el.classList.contains('done') ? '✓' : '';
+  // Check all done
+  const all = document.querySelectorAll('.check-item').length;
+  const done = document.querySelectorAll('.check-item.done').length;
+  const banner = document.getElementById('done-banner');
+  if (all === done && all > 0) {
+    banner.style.display = 'block';
+    banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   } else {
-    document.getElementById('completion-banner').style.display = 'none';
+    banner.style.display = 'none';
   }
 }
 
+// Nav pill
+function setPill(el) {
+  document.querySelectorAll('.nav-step-pill').forEach(p => p.classList.remove('current'));
+  el.classList.add('current');
+}
+
+// Highlight current section in nav as you scroll
+const sections = document.querySelectorAll('.step-section');
+const pills = document.querySelectorAll('.nav-step-pill');
+window.addEventListener('scroll', () => {
+  let cur = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+  pills.forEach(p => {
+    p.classList.remove('current');
+    if (p.getAttribute('href') === '#' + cur) p.classList.add('current');
+  });
+});
+
 // Copy code button
-function copyCode(btn, text) {
-  navigator.clipboard.writeText(text || btn.nextElementSibling.textContent.trim()).then(() => {
+function copyCode(btn) {
+  const code = btn.parentElement.querySelector('code').textContent;
+  navigator.clipboard.writeText(code).then(() => {
     btn.textContent = 'Copied!';
     btn.classList.add('copied');
     setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
   });
 }
-
-// Scroll to section
-function scrollTo(selector) {
-  document.querySelector(selector)?.scrollIntoView({behavior:'smooth'});
-}
-
-// Progress dot tracking
-const sections = ['step-1','step-2','step-3','step-4','step-5','step-6','step-7','step-8'];
-const dots = document.querySelectorAll('.progress-dot');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const idx = sections.indexOf(entry.target.id);
-      if (idx !== -1) {
-        dots.forEach(d => d.classList.remove('active'));
-        dots[idx]?.classList.add('active');
-      }
-    }
-  });
-}, { threshold: 0.3 });
-sections.forEach(id => {
-  const el = document.getElementById(id);
-  if (el) observer.observe(el);
-});
 </script>
 </body>
 </html>
