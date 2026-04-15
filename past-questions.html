@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Past Questions | ATU Study Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--red:#C8102E;--red-dark:#8B0A1E;--gold:#F5A623;--gold-light:#FFD166;--white:#FFFFFF;--off-white:#FFF8F8;--dark:#0F0F0F;--gray:#6B7280;--gray-light:#F9F9F9;--shadow:0 4px 24px rgba(200,16,46,0.15);--radius:16px;--radius-sm:8px;--transition:all 0.35s cubic-bezier(0.4,0,0.2,1)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'Poppins',sans-serif;color:var(--dark);background:var(--off-white);overflow-x:hidden}a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
+#navbar{position:fixed;top:0;left:0;right:0;z-index:1000;padding:0 24px;height:70px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(200,16,46,0.12)}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--red);letter-spacing:2px}.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;align-items:center;gap:6px;list-style:none}.nav-links a{color:var(--dark);font-size:0.82rem;font-weight:500;padding:6px 10px;border-radius:6px;transition:var(--transition)}.nav-links a:hover,.nav-links a.active{background:rgba(200,16,46,0.08);color:var(--red)}.nav-cta{background:var(--gold)!important;color:var(--dark)!important;font-weight:700!important;padding:8px 16px!important;border-radius:8px!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}.hamburger span{display:block;width:24px;height:2px;background:var(--dark);border-radius:2px;transition:var(--transition)}.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}.hamburger.open span:nth-child(2){opacity:0}.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+#mobile-menu{position:fixed;top:70px;right:-100%;width:280px;height:calc(100vh - 70px);background:var(--white);z-index:999;padding:24px;transition:right 0.35s cubic-bezier(0.4,0,0.2,1);overflow-y:auto;box-shadow:-4px 0 20px rgba(0,0,0,0.1)}.#mobile-menu.open{right:0}#mobile-menu.open{right:0}.mobile-nav-links{list-style:none;display:flex;flex-direction:column;gap:4px}.mobile-nav-links a{display:block;padding:12px 16px;color:var(--dark);font-weight:500;border-radius:var(--radius-sm);transition:var(--transition);font-size:0.9rem}.mobile-nav-links a:hover{background:var(--gray-light);color:var(--red);padding-left:24px}.mobile-nav-links .mob-cta{background:var(--red);color:var(--white)!important;text-align:center;margin-top:12px;border-radius:var(--radius-sm)}
+.page-hero{background:linear-gradient(135deg,var(--red-dark) 0%,var(--red) 60%,#a0001e 100%);padding:120px 24px 60px;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.page-hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:2}
+.breadcrumb{display:flex;align-items:center;gap:8px;color:rgba(255,255,255,0.6);font-size:0.8rem;margin-bottom:16px}.breadcrumb a{color:rgba(255,255,255,0.6)}.breadcrumb a:hover{color:var(--white)}.breadcrumb span{color:rgba(255,255,255,0.4)}
+.page-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);color:var(--white);letter-spacing:2px;line-height:1;margin-bottom:12px}.page-title span{color:var(--gold)}
+.page-desc{color:rgba(255,255,255,0.75);max-width:600px;line-height:1.7}
+/* SEARCH & FILTER */
+.search-section{background:var(--white);padding:40px 24px;box-shadow:0 4px 20px rgba(0,0,0,0.05);position:sticky;top:70px;z-index:100}
+.search-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.search-bar-wrap{position:relative}
+.search-bar-wrap input{width:100%;padding:16px 20px 16px 52px;border:2px solid rgba(200,16,46,0.15);border-radius:var(--radius);font-size:0.95rem;font-family:'Poppins',sans-serif;background:var(--off-white);color:var(--dark);transition:var(--transition);outline:none}
+.search-bar-wrap input:focus{border-color:var(--red);background:var(--white);box-shadow:0 0 0 4px rgba(200,16,46,0.08)}
+.search-bar-wrap input::placeholder{color:var(--gray)}
+.search-icon{position:absolute;left:18px;top:50%;transform:translateY(-50%);font-size:1.1rem;color:var(--gray)}
+.search-clear{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(200,16,46,0.1);border:none;color:var(--red);width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:0.9rem;display:none;align-items:center;justify-content:center;transition:var(--transition)}
+.search-clear.visible{display:flex}.search-clear:hover{background:var(--red);color:var(--white)}
+/* FILTER ROW — horizontally scrollable / swipeable on mobile */
+.filters-scroll-wrap{position:relative}
+.filters-scroll-wrap::after{
+  content:'';position:absolute;right:0;top:0;bottom:0;width:40px;
+  background:linear-gradient(to right,transparent,var(--white));
+  pointer-events:none;border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+}
+.filters-row{
+  display:flex;flex-wrap:nowrap;gap:10px;align-items:center;
+  overflow-x:auto;-webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;padding-bottom:4px;
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+.filters-row::-webkit-scrollbar{display:none}
+.filter-select{
+  padding:10px 14px;border:2px solid rgba(200,16,46,0.12);
+  border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;
+  font-size:0.82rem;color:var(--dark);background:var(--off-white);
+  cursor:pointer;transition:var(--transition);outline:none;
+  min-width:155px;flex-shrink:0;scroll-snap-align:start;
+  white-space:nowrap;
+}
+.filter-select:focus{border-color:var(--red)}
+.filter-reset{
+  padding:10px 16px;background:rgba(200,16,46,0.08);color:var(--red);
+  border:none;border-radius:var(--radius-sm);font-family:'Poppins',sans-serif;
+  font-size:0.82rem;font-weight:600;cursor:pointer;transition:var(--transition);
+  flex-shrink:0;white-space:nowrap;scroll-snap-align:start;
+}
+.filter-reset:hover{background:var(--red);color:var(--white)}
+.results-info{font-size:0.82rem;color:var(--gray);font-weight:500;flex-shrink:0;white-space:nowrap}
+/* Mobile swipe hint */
+.filter-swipe-hint{display:none;font-size:0.7rem;color:var(--gray);text-align:right;margin-top:4px;font-style:italic}
+@media(max-width:768px){.filter-swipe-hint{display:block}}
+/* TABS */
+.tabs-section{max-width:1200px;margin:0 auto;padding:32px 24px 0}
+.tabs{display:flex;gap:8px;border-bottom:2px solid rgba(200,16,46,0.1);margin-bottom:32px}
+.tab-btn{padding:10px 20px;border:none;background:transparent;font-family:'Poppins',sans-serif;font-size:0.85rem;font-weight:600;color:var(--gray);cursor:pointer;transition:var(--transition);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab-btn.active{color:var(--red);border-bottom-color:var(--red)}
+.tab-btn:hover{color:var(--red)}
+/* CARDS GRID */
+.pq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:0 24px 80px;max-width:1200px;margin:0 auto}
+.pq-card{background:var(--white);border-radius:var(--radius);padding:20px;border:1px solid rgba(0,0,0,0.06);transition:var(--transition);display:flex;flex-direction:column;gap:12px}
+.pq-card:hover{transform:translateY(-4px);box-shadow:var(--shadow)}
+.pq-card.hidden{display:none}
+.pq-card-header{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.pq-badge{background:rgba(200,16,46,0.1);color:var(--red);font-size:0.65rem;font-weight:700;padding:3px 10px;border-radius:12px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+.pq-year{font-size:0.75rem;color:var(--gray);font-weight:500;background:var(--off-white);padding:3px 8px;border-radius:6px}
+.pq-title{font-weight:600;font-size:0.88rem;color:var(--dark);line-height:1.4}
+.pq-meta{display:flex;flex-wrap:wrap;gap:6px}
+.pq-meta-tag{display:flex;align-items:center;gap:4px;font-size:0.7rem;color:var(--gray);background:var(--gray-light);padding:3px 8px;border-radius:8px}
+.pq-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--gray-light)}
+.pq-downloads{font-size:0.7rem;color:var(--gray);font-weight:500}
+.btn-download{background:var(--red);color:var(--white);padding:8px 16px;border-radius:var(--radius-sm);font-size:0.78rem;font-weight:600;transition:var(--transition);border:none;cursor:pointer;font-family:'Poppins',sans-serif;text-decoration:none;display:inline-block}
+.btn-download:hover{background:var(--red-dark);transform:translateY(-1px)}
+.no-results{text-align:center;padding:80px 24px;grid-column:1/-1}
+.no-results .icon{font-size:3rem;margin-bottom:16px}
+.no-results h3{font-size:1.2rem;font-weight:600;margin-bottom:8px;color:var(--dark)}
+.no-results p{color:var(--gray);font-size:0.85rem;margin-bottom:20px}
+/* REQUEST BOX */
+.request-box{margin:0 24px 60px;max-width:1200px;margin-left:auto;margin-right:auto;background:linear-gradient(135deg,var(--red-dark),var(--red));border-radius:20px;padding:40px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center}
+.request-box h3{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--white);letter-spacing:1px;margin-bottom:8px}
+.request-box p{color:rgba(255,255,255,0.8);font-size:0.85rem;line-height:1.6}
+.btn-request{background:var(--gold);color:var(--dark);padding:14px 24px;border-radius:var(--radius-sm);font-weight:700;font-size:0.88rem;white-space:nowrap;transition:var(--transition);display:inline-flex;align-items:center;gap:8px}
+.btn-request:hover{background:var(--gold-light);transform:translateY(-2px)}
+/* FOOTER */
+#footer{background:var(--dark);color:rgba(255,255,255,0.8);padding:60px 24px 0}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.5fr 1.5fr;gap:40px;padding-bottom:40px}
+.footer-brand .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--white);letter-spacing:2px;margin-bottom:12px}.footer-brand .footer-logo span{color:var(--gold)}
+.footer-brand p{font-size:0.82rem;line-height:1.8;color:rgba(255,255,255,0.6)}
+.footer-col h4{font-family:'Bebas Neue',sans-serif;font-size:1rem;color:var(--white);letter-spacing:2px;margin-bottom:16px;padding-bottom:8px;border-bottom:2px solid var(--red);display:inline-block}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:8px}.footer-col ul a{font-size:0.8rem;color:rgba(255,255,255,0.6);transition:var(--transition)}.footer-col ul a:hover{color:var(--gold)}
+.footer-contact-item{display:flex;gap:8px;margin-bottom:10px;font-size:0.8rem}.footer-contact-item a{color:rgba(255,255,255,0.7)}.footer-contact-item a:hover{color:var(--gold)}
+.footer-dev{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;margin-top:12px}
+.dev-img-placeholder{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--gold));display:flex;align-items:center;justify-content:center;color:var(--white);font-weight:700;font-size:0.9rem;flex-shrink:0}
+.dev-info strong{display:block;font-size:0.8rem;color:var(--white)}.dev-info span{font-size:0.7rem;color:var(--gold)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding:20px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.footer-bottom p{font-size:0.75rem;color:rgba(255,255,255,0.4)}
+/* CHATBOT */
+#chatbot{position:fixed;bottom:24px;right:24px;z-index:1001}
+.chatbot-toggle{width:56px;height:56px;border-radius:50%;background:var(--red);color:var(--white);border:none;font-size:1.4rem;cursor:pointer;box-shadow:0 4px 20px rgba(200,16,46,0.4);transition:var(--transition);display:flex;align-items:center;justify-content:center}.chatbot-toggle:hover{background:var(--red-dark);transform:scale(1.08)}
+.chatbot-bubble{position:absolute;bottom:68px;right:0;width:300px;background:var(--white);border-radius:20px 20px 4px 20px;box-shadow:0 12px 48px rgba(0,0,0,0.15);overflow:hidden;transform:scale(0.85) translateY(12px);transform-origin:bottom right;opacity:0;pointer-events:none;transition:var(--transition)}.chatbot-bubble.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+.chatbot-head{background:linear-gradient(135deg,var(--red),var(--red-dark));padding:16px 20px;color:var(--white)}.chatbot-head strong{display:block;font-size:0.9rem}.chatbot-head span{font-size:0.75rem;opacity:0.8}
+.chatbot-options{padding:16px;display:flex;flex-direction:column;gap:8px}.chatbot-option{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:10px;background:var(--gray-light);border:none;cursor:pointer;font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:500;color:var(--dark);transition:var(--transition);text-align:left;width:100%}.chatbot-option:hover{background:rgba(200,16,46,0.08);color:var(--red)}
+.chatbot-option-icon{width:32px;height:32px;border-radius:8px;background:rgba(200,16,46,0.1);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.chatbot-footer{padding:12px 16px;border-top:1px solid var(--gray-light);text-align:center;font-size:0.72rem;color:var(--gray)}
+@media(max-width:768px){.nav-links{display:none}.hamburger{display:flex}.footer-grid{grid-template-columns:1fr}.pq-grid{grid-template-columns:1fr}.request-box{grid-template-columns:1fr;text-align:center}.search-section{top:70px}}
+@media(max-width:480px){.filters-scroll-wrap::after{display:none}}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">ATU <span>Study Hub</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li><li><a href="faculties.html">Faculties</a></li><li><a href="past-questions.html" class="active">Past Questions</a></li><li><a href="about.html">About</a></li><li><a href="mission.html">Mission</a></li><li><a href="vision.html">Vision</a></li><li><a href="help.html">Help</a></li><li><a href="contact.html">Contact</a></li><li><a href="login.html" class="nav-cta">Login / Signup</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+</nav>
+<div id="mobile-menu">
+  <ul class="mobile-nav-links">
+    <li><a href="index.html">🏠 Home</a></li><li><a href="faculties.html">🏛️ Faculties</a></li><li><a href="past-questions.html">📚 Past Questions</a></li><li><a href="about.html">👤 About</a></li><li><a href="mission.html">🎯 Mission</a></li><li><a href="vision.html">🔭 Vision</a></li><li><a href="help.html">🆘 Help</a></li><li><a href="contact.html">📞 Contact</a></li><li><a href="login.html" class="mob-cta">Login / Signup</a></li>
+  </ul>
+</div>
+
+<div class="page-hero">
+  <div class="page-hero-inner">
+    <div class="breadcrumb"><a href="index.html">Home</a><span>/</span><span style="color:var(--white)">Past Questions</span></div>
+    <h1 class="page-title">Past <span>Questions</span></h1>
+    <p class="page-desc">Access hundreds of past exam questions from all ATU faculties and departments. Filter by faculty, level, or year to find exactly what you need.</p>
+  </div>
+</div>
+
+<!-- SEARCH & FILTER BAR -->
+<div class="search-section">
+  <div class="search-inner">
+    <div class="search-bar-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by course name, faculty, or department..." oninput="filterPQ()">
+      <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+    </div>
+    <div class="filters-scroll-wrap">
+      <div class="filters-row">
+        <select class="filter-select" id="filterFaculty" onchange="filterPQ()">
+          <option value="">All Faculties</option>
+          <option value="engineering">Engineering</option>
+          <option value="business">Business</option>
+          <option value="computing">Computing</option>
+          <option value="health">Health Sciences</option>
+          <option value="art">Art & Design</option>
+          <option value="sciences">Applied Sciences</option>
+        </select>
+        <select class="filter-select" id="filterLevel" onchange="filterPQ()">
+          <option value="">All Levels</option>
+          <option value="100">Level 100</option>
+          <option value="200">Level 200</option>
+          <option value="300">Level 300</option>
+          <option value="hnd1">HND 1</option>
+          <option value="hnd2">HND 2</option>
+        </select>
+        <select class="filter-select" id="filterYear" onchange="filterPQ()">
+          <option value="">All Years</option>
+          <option value="2024">2024</option>
+          <option value="2023">2023</option>
+          <option value="2022">2022</option>
+          <option value="2021">2021</option>
+          <option value="2020">2020</option>
+        </select>
+        <button class="filter-reset" onclick="resetFilters()">✕ Reset</button>
+        <span class="results-info" id="resultsInfo">Showing all</span>
+      </div>
+      <div class="filter-swipe-hint">← Swipe filters left/right →</div>
+    </div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-section">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(this,'all')">All Questions</button>
+    <button class="tab-btn" onclick="switchTab(this,'trending')">🔥 Most Downloaded</button>
+    <button class="tab-btn" onclick="switchTab(this,'recent')">🆕 Recently Added</button>
+  </div>
+</div>
+
+<!-- PAST QUESTIONS GRID -->
+<div class="pq-grid" id="pqGrid">
+  <!-- Engineering -->
+  <div class="pq-card" data-faculty="engineering" data-level="100" data-year="2023" data-title="Engineering Mathematics I Final Exam" data-tab="trending recent">
+    <div class="pq-card-header"><span class="pq-badge">Engineering</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">Engineering Mathematics I – Final Exam</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 100</span><span class="pq-meta-tag">🏫 HND</span><span class="pq-meta-tag">📅 Sem 2</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 234 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="engineering" data-level="200" data-year="2022" data-title="Structural Engineering Principles">
+    <div class="pq-card-header"><span class="pq-badge">Engineering</span><span class="pq-year">2022</span></div>
+    <div class="pq-title">Structural Engineering Principles – Mid Sem</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 200</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 145 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="engineering" data-level="300" data-year="2023" data-title="Civil Engineering Final Year Project" data-tab="recent">
+    <div class="pq-card-header"><span class="pq-badge">Engineering</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">Civil Engineering Design – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 300</span><span class="pq-meta-tag">🏫 BTech</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 98 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <!-- Computing -->
+  <div class="pq-card" data-faculty="computing" data-level="100" data-year="2023" data-title="Introduction to Programming Midterm" data-tab="trending">
+    <div class="pq-card-header"><span class="pq-badge">Computing</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">Introduction to Programming – Midterm</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 100</span><span class="pq-meta-tag">🏫 BTech</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 189 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="computing" data-level="200" data-year="2022" data-title="Database Management Systems Final" data-tab="recent">
+    <div class="pq-card-header"><span class="pq-badge">Computing</span><span class="pq-year">2022</span></div>
+    <div class="pq-title">Database Management Systems – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 200</span><span class="pq-meta-tag">🏫 BTech</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 167 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="computing" data-level="300" data-year="2023" data-title="Software Engineering Final">
+    <div class="pq-card-header"><span class="pq-badge">Computing</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">Software Engineering Practices – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 300</span><span class="pq-meta-tag">🏫 BTech</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 122 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <!-- Business -->
+  <div class="pq-card" data-faculty="business" data-level="hnd1" data-year="2022" data-title="Principles of Accounting Final" data-tab="trending">
+    <div class="pq-card-header"><span class="pq-badge">Business</span><span class="pq-year">2022</span></div>
+    <div class="pq-title">Principles of Accounting – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 HND 1</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 176 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="business" data-level="hnd2" data-year="2023" data-title="Marketing Management Midterm" data-tab="recent">
+    <div class="pq-card-header"><span class="pq-badge">Business</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">Marketing Management – Midterm</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 HND 2</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 134 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="business" data-level="200" data-year="2021" data-title="Business Law Final Exam">
+    <div class="pq-card-header"><span class="pq-badge">Business</span><span class="pq-year">2021</span></div>
+    <div class="pq-title">Business Law – Final Exam</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 200</span><span class="pq-meta-tag">🏫 BTech</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 112 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <!-- Health -->
+  <div class="pq-card" data-faculty="health" data-level="100" data-year="2022" data-title="Anatomy and Physiology Final">
+    <div class="pq-card-header"><span class="pq-badge">Health Sciences</span><span class="pq-year">2022</span></div>
+    <div class="pq-title">Anatomy & Physiology – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 100</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 143 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="health" data-level="200" data-year="2023" data-title="Community Health Nursing Midterm" data-tab="recent">
+    <div class="pq-card-header"><span class="pq-badge">Health Sciences</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">Community Health Nursing – Midterm</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 200</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 88 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <!-- Art -->
+  <div class="pq-card" data-faculty="art" data-level="100" data-year="2022" data-title="Design Principles and Theory">
+    <div class="pq-card-header"><span class="pq-badge">Art & Design</span><span class="pq-year">2022</span></div>
+    <div class="pq-title">Design Principles and Theory – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 100</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 76 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <!-- Sciences -->
+  <div class="pq-card" data-faculty="sciences" data-level="100" data-year="2023" data-title="General Chemistry I Final Exam" data-tab="recent">
+    <div class="pq-card-header"><span class="pq-badge">Applied Sciences</span><span class="pq-year">2023</span></div>
+    <div class="pq-title">General Chemistry I – Final Exam</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 100</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 109 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <div class="pq-card" data-faculty="sciences" data-level="200" data-year="2022" data-title="Statistics for Science Students">
+    <div class="pq-card-header"><span class="pq-badge">Applied Sciences</span><span class="pq-year">2022</span></div>
+    <div class="pq-title">Statistics for Science Students – Final</div>
+    <div class="pq-meta"><span class="pq-meta-tag">📂 Level 200</span><span class="pq-meta-tag">🏫 HND</span></div>
+    <div class="pq-footer"><span class="pq-downloads">↓ 94 downloads</span><a href="pdfs/example.pdf" download class="btn-download">⬇️ Download</a></div>
+  </div>
+  <!-- No results message -->
+  <div class="no-results hidden" id="noResults">
+    <div class="icon">😕</div>
+    <h3>No past questions found</h3>
+    <p>We couldn't find any past questions matching your search. Try different filters or request a specific past question below.</p>
+    <a href="https://wa.me/233536801965?text=Hi%20Bafiku%2C%20please%20I%20need%20past%20questions%20for%20" target="_blank" class="btn-download" style="padding:12px 24px">📲 Request on WhatsApp</a>
+  </div>
+</div>
+
+<!-- REQUEST A PAST QUESTION -->
+<div style="padding:0 24px 60px;max-width:1200px;margin:0 auto">
+  <div class="request-box">
+    <div>
+      <h3>Can't Find Your Past Question?</h3>
+      <p>Message Bafiku directly on WhatsApp with your course name, faculty, department, level, and year — and we'll upload it within 24 hours!</p>
+    </div>
+    <a href="https://wa.me/233536801965?text=Hi%20Bafiku%2C%20I%20need%20past%20questions%20for%20this%20course%3A%20" target="_blank" class="btn-request">📲 Request on WhatsApp</a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand footer-col">
+        <div class="footer-logo">ATU <span>Study Hub</span></div>
+        <p>Your premier academic resource platform for ATU students.</p>
+      </div>
+      <div class="footer-col"><h4>Quick Links</h4><ul><li><a href="index.html">Home</a></li><li><a href="faculties.html">Faculties</a></li><li><a href="past-questions.html">Past Questions</a></li><li><a href="about.html">About</a></li></ul></div>
+      <div class="footer-col"><h4>Resources</h4><ul><li><a href="mission.html">Mission</a></li><li><a href="vision.html">Vision</a></li><li><a href="contact.html">Contact</a></li><li><a href="login.html">Login</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4>
+        <div class="footer-contact-item">📞 <a href="tel:+233536801965">053 680 1965</a></div>
+        <div class="footer-contact-item">💬 <a href="https://wa.me/233536801965" target="_blank">WhatsApp</a></div>
+        <div class="footer-contact-item">📸 <a href="https://www.instagram.com/mr.bafiku" target="_blank">@mr.bafiku</a></div>
+      </div>
+      <div class="footer-col"><h4>Developer</h4>
+        <div class="footer-dev">
+          <div class="dev-img-placeholder">IL</div>
+          <div class="dev-info"><strong>Ibrahim M. Lotsu</strong><span>Ibratech 🛠️</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom"><p>© 2026 ATU Study Hub. All rights reserved.</p><p>Built with ❤️ for ATU Students by <strong style="color:var(--gold)">Ibratech</strong></p></div>
+  </div>
+</footer>
+
+<div id="chatbot">
+  <div class="chatbot-bubble" id="chatbotBubble">
+    <div class="chatbot-head"><strong>👋 Hi! How can I help?</strong><span>ATU Study Hub</span></div>
+    <div class="chatbot-options">
+      <button class="chatbot-option" onclick="window.location='past-questions.html'"><div class="chatbot-option-icon">📚</div>Find Past Questions</button>
+      <button class="chatbot-option" onclick="window.open('https://wa.me/233536801965','_blank')"><div class="chatbot-option-icon">💬</div>Contact Bafiku</button>
+      <button class="chatbot-option" onclick="window.open('https://wa.me/233536801965?text=Join+campaign','_blank')"><div class="chatbot-option-icon">🗳️</div>Join Campaign</button>
+    </div>
+    <div class="chatbot-footer">Powered by ATU Study Hub</div>
+  </div>
+  <button class="chatbot-toggle" id="chatbotToggle" onclick="toggleChatbot()">💬</button>
+</div>
+
+<script>
+// NAV
+function toggleMenu(){const m=document.getElementById('mobile-menu'),h=document.getElementById('hamburger');m.classList.toggle('open');h.classList.toggle('open')}
+document.addEventListener('click',function(e){const m=document.getElementById('mobile-menu'),h=document.getElementById('hamburger');if(!m.contains(e.target)&&!h.contains(e.target)&&m.classList.contains('open')){m.classList.remove('open');h.classList.remove('open')}});
+function toggleChatbot(){const b=document.getElementById('chatbotBubble'),t=document.getElementById('chatbotToggle');const o=b.classList.toggle('open');t.textContent=o?'✕':'💬'}
+
+// TAB SWITCHING
+let currentTab = 'all';
+function switchTab(btn, tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentTab = tab;
+  filterPQ();
+}
+
+// FILTER FUNCTION
+function filterPQ() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const faculty = document.getElementById('filterFaculty').value;
+  const level = document.getElementById('filterLevel').value;
+  const year = document.getElementById('filterYear').value;
+  const cards = document.querySelectorAll('.pq-card:not(#noResults)');
+  const clearBtn = document.getElementById('searchClear');
+  clearBtn.classList.toggle('visible', query.length > 0);
+  let visible = 0;
+  cards.forEach(card => {
+    if (card.id === 'noResults') return;
+    const titleMatch = card.dataset.title.toLowerCase().includes(query);
+    const facultyMatch = !faculty || card.dataset.faculty === faculty;
+    const levelMatch = !level || card.dataset.level === level;
+    const yearMatch = !year || card.dataset.year === year;
+    const tabMatch = currentTab === 'all' || (card.dataset.tab && card.dataset.tab.includes(currentTab));
+    const show = titleMatch && facultyMatch && levelMatch && yearMatch && tabMatch;
+    card.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('noResults').classList.toggle('hidden', visible > 0);
+  const total = document.querySelectorAll('.pq-card:not(#noResults):not(.hidden)').length;
+  document.getElementById('resultsInfo').textContent = `Showing ${total} result${total !== 1 ? 's' : ''}`;
+}
+
+function clearSearch(){document.getElementById('searchInput').value='';filterPQ()}
+function resetFilters(){document.getElementById('searchInput').value='';document.getElementById('filterFaculty').value='';document.getElementById('filterLevel').value='';document.getElementById('filterYear').value='';filterPQ()}
+// Init
+filterPQ();
+</script>
+</body>
+</html>
+ 
